@@ -257,8 +257,9 @@ select option{background:#0d1524;}
 
 <script>
 const SE_NAMES=['Riley Finger','Michael Cieslak','Adam Kissee','Shaun Benson','Eric Lorenzo','Katherine Morales','Brandon Quach','David Blagaila','Karthik Pradeep','Katherine Peppler','Mikinzi Strykul','Rohan Sahoo'];
+const ADMIN_PASSWORD='spiff2025';
 const STARTING_BANK=25000,REASSIGN_COST=50000,TOKEN_COUNT=10;
-const STORAGE_KEY='spiff_state_v4';
+const STORAGE_KEY='spiff_state_v4'; // kept for reference only, not used
 const TMULT=t=>TOKEN_COUNT-t+1;
 const TVAL=t=>TMULT(t)*10000;
 const fmt=n=>'$'+Math.round(n).toLocaleString();
@@ -273,17 +274,27 @@ function initState(){
   oppCounter=1;
 }
 
-function loadState(){
-  try{const raw=localStorage.getItem(STORAGE_KEY);if(raw){const s=JSON.parse(raw);state=s.state;oppCounter=s.oppCounter||1;}else{initState();}}catch(e){initState();}
+let _adminPass='';
+
+async function loadState(){
+  try{
+    const r=await fetch('/api/state');
+    if(r.ok){const data=await r.json();if(data&&data.state){state=data.state;oppCounter=data.oppCounter||1;return;}}
+  }catch(e){}
+  initState();
 }
 
-function saveState(){
+async function saveState(){
+  const ind=document.getElementById('save-indicator');
+  if(ind){ind.textContent='saving...';ind.className='save-indicator';}
   try{
-    localStorage.setItem(STORAGE_KEY,JSON.stringify({state,oppCounter}));
-    const ind=document.getElementById('save-indicator');
-    if(ind){ind.textContent='saved';ind.className='save-indicator ok';setTimeout(()=>{ind.textContent='';},1500);}
+    const r=await fetch('/api/state',{method:'POST',headers:{'Content-Type':'application/json','x-admin-pass':_adminPass},body:JSON.stringify({state,oppCounter})});
+    if(r.ok){
+      if(ind){ind.textContent='saved';ind.className='save-indicator ok';setTimeout(()=>{ind.textContent='';},1500);}
+    }else{
+      if(ind){ind.textContent='save failed';ind.className='save-indicator err';}
+    }
   }catch(e){
-    const ind=document.getElementById('save-indicator');
     if(ind){ind.textContent='save failed';ind.className='save-indicator err';}
   }
 }
@@ -293,14 +304,14 @@ function addAudit(action,details,snap){
   if(state.auditLog.length>150)state.auditLog.pop();
 }
 
-function undoEntry(id){
+async function undoEntry(id){
   const entry=state.auditLog.find(a=>a.id===id);
   if(!entry||!entry.undoSnapshot){alert('Cannot undo.');return;}
   if(!confirm('Undo this action and restore the previous state?'))return;
   const snap=JSON.parse(entry.undoSnapshot);
   state=snap.state;oppCounter=snap.oppCounter;
   addAudit('UNDO','Reverted: '+entry.action,null);
-  saveState();renderAll();
+  await saveState();renderAll();
 }
 
 function setLoginMode(mode){
@@ -316,19 +327,20 @@ async function doLogin(){
   if(loginMode==='admin'){
     const pass=document.getElementById('login-pass').value;
     err.textContent='// authenticating...';
-    try {
+    try{
       const r=await fetch('/api/auth',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({password:pass})});
       if(!r.ok){err.textContent='// incorrect password';return;}
-    } catch(e) {
-      err.textContent='// server error, try again';return;
-    }
+    }catch(e){err.textContent='// server error, try again';return;}
+    _adminPass=pass;
     currentRole='admin';currentUser='Admin';
   }else{
     const name=document.getElementById('viewer-name').value;
     if(!name){err.textContent='// select your name';return;}
     currentRole='viewer';currentUser=name;
   }
-  loadState();
+  err.textContent='// loading...';
+  await loadState();
+  err.textContent='';
   document.getElementById('login-screen').style.display='none';
   document.getElementById('main-app').style.display='block';
   document.getElementById('role-badge').textContent=currentRole==='admin'?'ADMIN':'VIEW ONLY';
@@ -414,7 +426,7 @@ function renderLeaderboard(){
   }).join('');
 }
 
-function addOpp(){
+async function addOpp(){
   const name=document.getElementById('opp-name').value.trim();
   const value=parseFloat(document.getElementById('opp-value').value);
   const stage=document.getElementById('opp-stage').value;
@@ -422,25 +434,25 @@ function addOpp(){
   const snap=JSON.stringify({state,oppCounter});
   state.opps.push({id:oppCounter++,name,value,stage});
   addAudit('ADD OPP',`${name} — ${fmt(value)} [${stage}]`,snap);
-  saveState();renderOpps();
+  await saveState();renderOpps();
 }
 
-function updateOppStage(id,stage){
+async function updateOppStage(id,stage){
   const opp=state.opps.find(o=>o.id===id);if(!opp)return;
   const snap=JSON.stringify({state,oppCounter});
   const old=opp.stage;opp.stage=stage;
   addAudit('UPDATE OPP',`${opp.name}: ${old} → ${stage}`,snap);
-  saveState();renderOpps();
+  await saveState();renderOpps();
 }
 
-function removeOpp(id){
+async function removeOpp(id){
   const opp=state.opps.find(o=>o.id===id);
   if(!opp||!confirm(`Remove "${opp.name}"?`))return;
   const snap=JSON.stringify({state,oppCounter});
   state.ses.forEach(se=>se.tokens.forEach(tok=>{if(tok.oppId===id)tok.oppId=null;}));
   state.opps=state.opps.filter(o=>o.id!==id);
   addAudit('REMOVE OPP',opp.name,snap);
-  saveState();renderOpps();
+  await saveState();renderOpps();
 }
 
 function renderOpps(){
@@ -510,7 +522,7 @@ function renderTokensForSE(){
   document.getElementById('se-token-view').innerHTML=`<div style="margin-top:1rem;border-top:1px solid #1e2d42;padding-top:1rem"><div class="form-label" style="margin-bottom:8px">${se.name} — bank: <span style="color:#027DAD;font-family:Share Tech Mono,monospace">${fmt(se.bank)}</span></div><div>${se.tokens.map(t=>{const opp=t.oppId!==null?state.opps.find(o=>o.id===t.oppId):null;return`<span class="token-pill ${opp?'on':''}">T${t.num}·${TMULT(t.num)}x ${opp?'→ '+opp.name:'unassigned'}</span>`;}).join('')}</div></div>`;
 }
 
-function assignToken(){
+async function assignToken(){
   const seId=parseInt(document.getElementById('assign-se').value);
   const tokenNum=parseInt(document.getElementById('assign-token').value);
   const oppIdRaw=document.getElementById('assign-opp').value;
@@ -525,17 +537,17 @@ function assignToken(){
   const oppName=oppId!==null?(state.opps.find(o=>o.id===oppId)||{name:'unknown'}).name:'(unassigned)';
   tok.oppId=oppId;
   addAudit('ASSIGN TOKEN',`${se.name} T${tokenNum} → ${oppName}`,snap);
-  saveState();renderTokensForSE();renderOpps();
+  await saveState();renderTokensForSE();renderOpps();
 }
 
-function midQuarterReassign(){
+async function midQuarterReassign(){
   const seId=parseInt(document.getElementById('assign-se').value);
   const se=state.ses.find(s=>s.id===seId);if(!se)return;
   if(!confirm(`Charge ${se.name} $50,000 for mid-quarter reassignment?\nBank: ${fmt(se.bank)} → ${fmt(se.bank-REASSIGN_COST)}`))return;
   const snap=JSON.stringify({state,oppCounter});
   se.bank-=REASSIGN_COST;
   addAudit('MID-Q REASSIGN',`${se.name} — charged $50,000`,snap);
-  saveState();renderTokensForSE();
+  await saveState();renderTokensForSE();
 }
 
 function renderTradeTab(){
@@ -550,7 +562,7 @@ function populateSellerTokens(){
   document.getElementById('trade-token').innerHTML=se.tokens.map(t=>`<option value="${t.num}">Token ${t.num} (${TMULT(t.num)}x) — ${fmt(TVAL(t.num))}</option>`).join('');
 }
 
-function executeTrade(){
+async function executeTrade(){
   const sellerId=parseInt(document.getElementById('trade-seller').value);
   const buyerId=parseInt(document.getElementById('trade-buyer').value);
   const tokenNum=parseInt(document.getElementById('trade-token').value);
@@ -568,7 +580,7 @@ function executeTrade(){
   tok.ownerId=buyerId;
   buyer.tokens.push(tok);buyer.tokens.sort((a,b)=>a.num-b.num);
   addAudit('TOKEN TRADE',`${seller.name} → ${buyer.name}: T${tokenNum} for ${fmt(price)}`,snap);
-  saveState();populateSellerTokens();renderTradeLog();
+  await saveState();populateSellerTokens();renderTradeLog();
 }
 
 function renderTradeLog(){
