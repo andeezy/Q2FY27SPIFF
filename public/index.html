@@ -281,21 +281,34 @@ async function loadState(){
 async function saveState(){
   const ind=document.getElementById('save-indicator');
   if(ind){ind.textContent='saving...';ind.className='save-indicator';}
+  const payload=JSON.stringify({state,oppCounter});
+  const sizeKB=Math.round(payload.length/1024);
+  if(sizeKB>4000){
+    console.warn(`Payload too large: ${sizeKB}KB`);
+    if(ind){ind.textContent=`save failed (too large: ${sizeKB}KB)`;ind.className='save-indicator err';}
+    return;
+  }
   try{
-    const r=await fetch('/api/state',{method:'POST',headers:{'Content-Type':'application/json','x-admin-pass':_adminPass},body:JSON.stringify({state,oppCounter})});
+    const r=await fetch('/api/state',{method:'POST',headers:{'Content-Type':'application/json','x-admin-pass':_adminPass},body:payload});
     if(r.ok){
       if(ind){ind.textContent='saved';ind.className='save-indicator ok';setTimeout(()=>{ind.textContent='';},1500);}
     }else{
-      if(ind){ind.textContent='save failed';ind.className='save-indicator err';}
+      const errText=await r.text();
+      console.error('Save failed:',r.status,errText);
+      if(ind){ind.textContent=`save failed (${r.status})`;ind.className='save-indicator err';}
     }
   }catch(e){
+    console.error('Save error:',e);
     if(ind){ind.textContent='save failed';ind.className='save-indicator err';}
   }
 }
 
 function addAudit(action,details,snap){
   state.auditLog.unshift({id:Date.now(),time:ts(),action,details,undoSnapshot:snap||null});
-  if(state.auditLog.length>150)state.auditLog.pop();
+  // keep full audit history but only retain undo snapshots for the 3 most recent entries
+  // this prevents the payload from growing unbounded as opps are added
+  state.auditLog.forEach((entry,i)=>{if(i>=3)entry.undoSnapshot=null;});
+  if(state.auditLog.length>50)state.auditLog.length=50;
 }
 
 async function undoEntry(id){
