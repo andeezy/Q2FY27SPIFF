@@ -264,7 +264,7 @@ function initState(){
   oppCounter=1;
 }
 
-let _adminPass='';
+let _adminPass=sessionStorage.getItem('spiff_admin_pass')||'';
 
 async function loadState(){
   try{
@@ -322,11 +322,17 @@ async function doLogin(){
       if(!r.ok){err.textContent='// incorrect password';return;}
     }catch(e){err.textContent='// server error, try again';return;}
     _adminPass=pass;
+    sessionStorage.setItem('spiff_admin_pass',pass);
+    sessionStorage.setItem('spiff_role','admin');
+    sessionStorage.removeItem('spiff_viewer');
     currentRole='admin';currentUser='Admin';
   }else{
     const name=document.getElementById('viewer-name').value;
     if(!name){err.textContent='// select your name';return;}
     currentRole='viewer';currentUser=name;
+    sessionStorage.setItem('spiff_role','viewer');
+    sessionStorage.setItem('spiff_viewer',name);
+    sessionStorage.removeItem('spiff_admin_pass');
   }
   err.textContent='// loading...';
   await loadState();
@@ -339,7 +345,8 @@ async function doLogin(){
 }
 
 function doLogout(){
-  currentRole=null;currentUser=null;
+  currentRole=null;currentUser=null;_adminPass='';
+  sessionStorage.clear();
   document.getElementById('main-app').style.display='none';
   document.getElementById('login-screen').style.display='flex';
   document.getElementById('login-pass').value='';
@@ -596,6 +603,30 @@ function renderAudit(){
 }
 
 document.getElementById('viewer-name').innerHTML=SE_NAMES.map(n=>`<option value="${n}">${n}</option>`).join('');
+
+(async()=>{
+  const savedRole=sessionStorage.getItem('spiff_role');
+  if(savedRole==='admin'&&_adminPass){
+    currentRole='admin';currentUser='Admin';
+    await loadState();
+    document.getElementById('login-screen').style.display='none';
+    document.getElementById('main-app').style.display='block';
+    document.getElementById('role-badge').textContent='ADMIN';
+    document.getElementById('role-badge').className='role-badge role-admin';
+    applyRoleUI();renderAll();
+  }else if(savedRole==='viewer'){
+    const name=sessionStorage.getItem('spiff_viewer');
+    if(name){
+      currentRole='viewer';currentUser=name;
+      await loadState();
+      document.getElementById('login-screen').style.display='none';
+      document.getElementById('main-app').style.display='block';
+      document.getElementById('role-badge').textContent='VIEW ONLY';
+      document.getElementById('role-badge').className='role-badge role-viewer';
+      applyRoleUI();renderAll();
+    }
+  }
+})();
 </script>
 </body>
 </html>
