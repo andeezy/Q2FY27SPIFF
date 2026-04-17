@@ -257,7 +257,6 @@ select option{background:#0d1524;}
 
 <script>
 const SE_NAMES=['Riley Finger','Michael Cieslak','Adam Kissee','Shaun Benson','Eric Lorenzo','Katherine Morales','Brandon Quach','David Blagaila','Karthik Pradeep','Katherine Peppler','Mikinzi Strykul','Rohan Sahoo'];
-const ADMIN_PASSWORD='Satnodnye200614@@@';
 const STARTING_BANK=25000,REASSIGN_COST=50000,TOKEN_COUNT=10;
 const STORAGE_KEY='spiff_state_v4';
 const TMULT=t=>TOKEN_COUNT-t+1;
@@ -312,11 +311,17 @@ function setLoginMode(mode){
   document.getElementById('viewer-fields').style.display=mode==='viewer'?'block':'none';
 }
 
-function doLogin(){
+async function doLogin(){
   const err=document.getElementById('login-err');err.textContent='';
   if(loginMode==='admin'){
     const pass=document.getElementById('login-pass').value;
-    if(pass!==ADMIN_PASSWORD){err.textContent='// incorrect password';return;}
+    err.textContent='// authenticating...';
+    try {
+      const r=await fetch('/api/auth',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({password:pass})});
+      if(!r.ok){err.textContent='// incorrect password';return;}
+    } catch(e) {
+      err.textContent='// server error, try again';return;
+    }
     currentRole='admin';currentUser='Admin';
   }else{
     const name=document.getElementById('viewer-name').value;
