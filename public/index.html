@@ -146,7 +146,6 @@ select option{background:#0d1524;}
     <button class="tab" onclick="showTab('opps',this)">Opportunities</button>
     <button class="tab" onclick="showTab('tokens',this)">Token Assignments</button>
     <button class="tab" id="tab-trades-btn" onclick="showTab('trades',this)">Token Market</button>
-    <button class="tab" id="tab-audit-btn" onclick="showTab('audit',this)">Audit Log</button>
   </div>
 
   <div id="tab-leaderboard" class="section active">
@@ -235,36 +234,22 @@ select option{background:#0d1524;}
       </table>
     </div>
   </div>
-
-  <div id="tab-audit" class="section">
-    <div class="card">
-      <div class="card-title">Audit log — all changes (most recent first)</div>
-      <div class="scroll-x">
-        <table id="audit-table">
-          <thead><tr><th>Time</th><th>Action</th><th>Details</th><th id="undo-col"></th></tr></thead>
-          <tbody></tbody>
-        </table>
-      </div>
-    </div>
-  </div>
 </div>
 
 <script>
 const SE_NAMES=['Riley Finger','Michael Cieslak','Adam Kissee','Shaun Benson','Eric Lorenzo','Katherine Morales','Brandon Quach','David Blagaila','Karthik Pradeep','Katherine Peppler','Mikinzi Strykul','Rohan Sahoo'];
 const ADMIN_PASSWORD='spiff2025';
 const STARTING_BANK=25000,REASSIGN_COST=50000,TOKEN_COUNT=10;
-const STORAGE_KEY='spiff_state_v4'; // kept for reference only, not used
 const TMULT=t=>TOKEN_COUNT-t+1;
 const TVAL=t=>TMULT(t)*10000;
 const fmt=n=>'$'+Math.round(n).toLocaleString();
-const ts=()=>new Date().toLocaleTimeString([],{hour:'2-digit',minute:'2-digit'});
 
 let currentRole=null,currentUser=null,loginMode='admin';
-let state={ses:[],opps:[],auditLog:[]};
+let state={ses:[],opps:[]};
 let oppCounter=1;
 
 function initState(){
-  state={ses:SE_NAMES.map((name,i)=>({id:i,name,bank:STARTING_BANK,tokens:Array.from({length:TOKEN_COUNT},(_,j)=>({num:j+1,oppId:null,ownerId:i}))})),opps:[],auditLog:[]};
+  state={ses:SE_NAMES.map((name,i)=>({id:i,name,bank:STARTING_BANK,tokens:Array.from({length:TOKEN_COUNT},(_,j)=>({num:j+1,oppId:null,ownerId:i}))})),opps:[],trades:[]};
   oppCounter=1;
 }
 
@@ -273,7 +258,7 @@ let _adminPass=sessionStorage.getItem('spiff_admin_pass')||'';
 async function loadState(){
   try{
     const r=await fetch('/api/state');
-    if(r.ok){const data=await r.json();if(data&&data.state){state=data.state;oppCounter=data.oppCounter||1;return;}}
+    if(r.ok){const data=await r.json();if(data&&data.state){state=data.state;oppCounter=data.oppCounter||1;if(!state.trades)state.trades=[];return;}}
   }catch(e){}
   initState();
 }
@@ -303,23 +288,6 @@ async function saveState(){
   }
 }
 
-function addAudit(action,details,snap){
-  state.auditLog.unshift({id:Date.now(),time:ts(),action,details,undoSnapshot:snap||null});
-  // keep full audit history but only retain undo snapshots for the 3 most recent entries
-  // this prevents the payload from growing unbounded as opps are added
-  state.auditLog.forEach((entry,i)=>{if(i>=3)entry.undoSnapshot=null;});
-  if(state.auditLog.length>50)state.auditLog.length=50;
-}
-
-async function undoEntry(id){
-  const entry=state.auditLog.find(a=>a.id===id);
-  if(!entry||!entry.undoSnapshot){alert('Cannot undo.');return;}
-  if(!confirm('Undo this action and restore the previous state?'))return;
-  const snap=JSON.parse(entry.undoSnapshot);
-  state=snap.state;oppCounter=snap.oppCounter;
-  addAudit('UNDO','Reverted: '+entry.action,null);
-  await saveState();renderAll();
-}
 
 function setLoginMode(mode){
   loginMode=mode;
@@ -379,8 +347,6 @@ function doLogout(){
 function applyRoleUI(){
   const isAdmin=currentRole==='admin';
   ['opps-admin-controls','tokens-admin-controls','trades-admin-controls'].forEach(id=>{const el=document.getElementById(id);if(el)el.style.display=isAdmin?'block':'none';});
-  document.getElementById('tab-audit-btn').style.display=isAdmin?'inline-block':'none';
-  const uc=document.getElementById('undo-col');if(uc)uc.textContent=isAdmin?'Undo':'';
 }
 
 function showTab(name,el){
@@ -397,7 +363,6 @@ function renderAll(){
   else if(id==='tab-opps')renderOpps();
   else if(id==='tab-tokens')renderTokenTab();
   else if(id==='tab-trades')renderTradeTab();
-  else if(id==='tab-audit')renderAudit();
 }
 
 function getSEScores(){
@@ -453,27 +418,21 @@ async function addOpp(){
   const value=parseFloat(document.getElementById('opp-value').value);
   const stage=document.getElementById('opp-stage').value;
   if(!name||isNaN(value)||value<=0){alert('Enter a valid name and value.');return;}
-  const snap=JSON.stringify({state,oppCounter});
   state.opps.push({id:oppCounter++,name,value,stage});
-  addAudit('ADD OPP',`${name} — ${fmt(value)} [${stage}]`,snap);
   await saveState();renderOpps();
 }
 
 async function updateOppStage(id,stage){
   const opp=state.opps.find(o=>o.id===id);if(!opp)return;
-  const snap=JSON.stringify({state,oppCounter});
   const old=opp.stage;opp.stage=stage;
-  addAudit('UPDATE OPP',`${opp.name}: ${old} → ${stage}`,snap);
   await saveState();renderOpps();
 }
 
 async function removeOpp(id){
   const opp=state.opps.find(o=>o.id===id);
   if(!opp||!confirm(`Remove "${opp.name}"?`))return;
-  const snap=JSON.stringify({state,oppCounter});
   state.ses.forEach(se=>se.tokens.forEach(tok=>{if(tok.oppId===id)tok.oppId=null;}));
   state.opps=state.opps.filter(o=>o.id!==id);
-  addAudit('REMOVE OPP',opp.name,snap);
   await saveState();renderOpps();
 }
 
@@ -555,10 +514,8 @@ async function assignToken(){
     const alreadyTaken=state.ses.some(s=>s.tokens.some(t=>t.oppId===oppId&&!(t.num===tokenNum&&s.id===seId)));
     if(alreadyTaken){alert('This opportunity already has a token assigned.\nOnly one token is allowed per opportunity.');return;}
   }
-  const snap=JSON.stringify({state,oppCounter});
   const oppName=oppId!==null?(state.opps.find(o=>o.id===oppId)||{name:'unknown'}).name:'(unassigned)';
   tok.oppId=oppId;
-  addAudit('ASSIGN TOKEN',`${se.name} T${tokenNum} → ${oppName}`,snap);
   await saveState();renderTokensForSE();renderOpps();
 }
 
@@ -566,9 +523,7 @@ async function midQuarterReassign(){
   const seId=parseInt(document.getElementById('assign-se').value);
   const se=state.ses.find(s=>s.id===seId);if(!se)return;
   if(!confirm(`Charge ${se.name} $50,000 for mid-quarter reassignment?\nBank: ${fmt(se.bank)} → ${fmt(se.bank-REASSIGN_COST)}`))return;
-  const snap=JSON.stringify({state,oppCounter});
   se.bank-=REASSIGN_COST;
-  addAudit('MID-Q REASSIGN',`${se.name} — charged $50,000`,snap);
   await saveState();renderTokensForSE();
 }
 
@@ -596,35 +551,26 @@ async function executeTrade(){
   const price=TVAL(tokenNum);
   if(buyer.bank<price){alert(`${buyer.name} needs ${fmt(price)} but only has ${fmt(buyer.bank)}.`);return;}
   if(!confirm(`Transfer Token ${tokenNum} from ${seller.name} to ${buyer.name}\nPrice: ${fmt(price)}\nBuyer bank:  ${fmt(buyer.bank)} → ${fmt(buyer.bank-price)}\nSeller bank: ${fmt(seller.bank)} → ${fmt(seller.bank+price)}`))return;
-  const snap=JSON.stringify({state,oppCounter});
   buyer.bank-=price;seller.bank+=price;
   const tok=seller.tokens.splice(tokIdx,1)[0];
   tok.ownerId=buyerId;
   buyer.tokens.push(tok);buyer.tokens.sort((a,b)=>a.num-b.num);
-  addAudit('TOKEN TRADE',`${seller.name} → ${buyer.name}: T${tokenNum} for ${fmt(price)}`,snap);
+  if(!state.trades)state.trades=[];
+  state.trades.unshift({seller:seller.name,buyer:buyer.name,tokenNum,price:TVAL(tokenNum),time:new Date().toLocaleTimeString([],{hour:'2-digit',minute:'2-digit'})});
   await saveState();populateSellerTokens();renderTradeLog();
 }
 
 function renderTradeLog(){
-  const trades=state.auditLog.filter(a=>a.action==='TOKEN TRADE');
+  const trades=state.trades||[];
   const tbody=document.querySelector('#trade-log-table tbody');
   if(trades.length===0){tbody.innerHTML='<tr><td colspan="5" style="color:#4a6280;text-align:center;padding:1rem;font-family:Share Tech Mono,monospace;font-size:11px">// no trades executed</td></tr>';return;}
-  tbody.innerHTML=trades.map(t=>{
-    const m=t.details.match(/^(.+) → (.+): T(\d+) for (.+)$/);
-    if(!m)return`<tr><td colspan="5" class="mono">${t.details}</td></tr>`;
-    return`<tr><td style="color:#e8f4f8">${m[1]}</td><td style="color:#027DAD">${m[2]}</td><td class="mono">Token ${m[3]} · ${TMULT(parseInt(m[3]))}x</td><td class="mono" style="color:#EF9F27">${m[4]}</td><td class="audit-time">${t.time}</td></tr>`;
-  }).join('');
-}
-
-function renderAudit(){
-  const isAdmin=currentRole==='admin';
-  const tbody=document.querySelector('#audit-table tbody');
-  if(state.auditLog.length===0){tbody.innerHTML='<tr><td colspan="4" style="color:#4a6280;text-align:center;padding:1.5rem;font-family:Share Tech Mono,monospace;font-size:11px">// no actions recorded</td></tr>';return;}
-  tbody.innerHTML=state.auditLog.map((entry,i)=>{
-    const canUndo=isAdmin&&entry.undoSnapshot&&i===0;
-    const undoCell=isAdmin?`<td><button class="undo-btn" ${canUndo?'':'disabled'} onclick="undoEntry(${entry.id})">${canUndo?'↩ undo':'—'}</button></td>`:'';
-    return`<tr><td class="audit-time">${entry.time}</td><td><span style="font-size:10px;font-family:Share Tech Mono,monospace;color:#027DAD;border:1px solid #027DAD33;padding:2px 6px;border-radius:3px;">${entry.action}</span></td><td class="audit-action">${entry.details}</td>${undoCell}</tr>`;
-  }).join('');
+  tbody.innerHTML=trades.map(t=>`<tr>
+    <td style="color:#e8f4f8">${t.seller}</td>
+    <td style="color:#027DAD">${t.buyer}</td>
+    <td class="mono">Token ${t.tokenNum} · ${TMULT(t.tokenNum)}x</td>
+    <td class="mono" style="color:#EF9F27">${fmt(t.price)}</td>
+    <td class="audit-time">${t.time}</td>
+  </tr>`).join('');
 }
 
 document.getElementById('viewer-name').innerHTML=SE_NAMES.map(n=>`<option value="${n}">${n}</option>`).join('');
