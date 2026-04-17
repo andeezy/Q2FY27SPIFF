@@ -1,0 +1,569 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SPIFF Token Tracker</title>
+<link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=Rajdhani:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+*{box-sizing:border-box;margin:0;padding:0;}
+body{background:#0a0e17;min-height:100vh;font-family:'Rajdhani',sans-serif;color:#c8d6e5;}
+.login-screen{min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:2rem;}
+.login-box{background:#0d1524;border:1px solid #1e2d42;border-radius:8px;padding:2.5rem 2rem;width:100%;max-width:360px;}
+.login-logo{text-align:center;margin-bottom:1.5rem;}
+.login-logo-mark{width:52px;height:52px;border:2px solid #00d4ff;border-radius:6px;display:flex;align-items:center;justify-content:center;font-family:'Share Tech Mono',monospace;font-size:18px;color:#00d4ff;margin:0 auto 12px;}
+.login-title{font-size:18px;font-weight:600;color:#e8f4f8;letter-spacing:2px;text-transform:uppercase;text-align:center;}
+.login-sub{font-size:10px;color:#4a6280;font-family:'Share Tech Mono',monospace;letter-spacing:1px;text-align:center;margin-top:4px;}
+.login-field{margin-bottom:12px;}
+.login-label{font-size:10px;color:#4a6280;letter-spacing:1.5px;text-transform:uppercase;font-family:'Share Tech Mono',monospace;margin-bottom:5px;display:block;}
+.login-input{width:100%;font-size:14px;background:#080e1a;color:#c8d6e5;border:1px solid #1e2d42;border-radius:4px;padding:9px 12px;font-family:'Rajdhani',sans-serif;outline:none;}
+.login-input:focus{border-color:#00d4ff44;}
+.login-btn{width:100%;padding:10px;border-radius:4px;border:1px solid #00d4ff44;font-size:13px;font-weight:600;letter-spacing:2px;text-transform:uppercase;cursor:pointer;background:#00d4ff18;color:#00d4ff;font-family:'Rajdhani',sans-serif;margin-top:8px;}
+.login-btn:hover{background:#00d4ff28;}
+.login-mode-btns{display:flex;gap:8px;margin-bottom:1.5rem;}
+.login-mode-btn{flex:1;padding:7px;border-radius:4px;border:1px solid #1e2d42;font-size:11px;font-weight:500;letter-spacing:1px;text-transform:uppercase;cursor:pointer;background:transparent;color:#4a6280;font-family:'Rajdhani',sans-serif;}
+.login-mode-btn.active{border-color:#00d4ff44;color:#00d4ff;background:#00d4ff12;}
+.login-err{font-size:11px;color:#e24b4a;font-family:'Share Tech Mono',monospace;margin-top:8px;text-align:center;}
+.app{padding:1.25rem;display:none;}
+.app-header{display:flex;align-items:center;gap:16px;margin-bottom:1.5rem;padding-bottom:1rem;border-bottom:1px solid #1e2d42;flex-wrap:wrap;gap:12px;}
+.logo-mark{width:36px;height:36px;border:1.5px solid #00d4ff;border-radius:4px;display:flex;align-items:center;justify-content:center;font-family:'Share Tech Mono',monospace;font-size:14px;color:#00d4ff;flex-shrink:0;}
+.app-title{font-size:20px;font-weight:600;color:#e8f4f8;letter-spacing:2px;text-transform:uppercase;}
+.app-sub{font-size:11px;color:#4a6280;font-family:'Share Tech Mono',monospace;letter-spacing:1px;margin-top:2px;}
+.header-right{margin-left:auto;display:flex;align-items:center;gap:10px;flex-wrap:wrap;}
+.quarter-badge{font-family:'Share Tech Mono',monospace;font-size:11px;color:#00d4ff;border:1px solid #00d4ff33;padding:4px 12px;border-radius:3px;letter-spacing:1px;}
+.role-badge{font-family:'Share Tech Mono',monospace;font-size:10px;padding:4px 10px;border-radius:3px;letter-spacing:1px;}
+.role-admin{color:#EF9F27;border:1px solid #EF9F2744;background:#EF9F2712;}
+.role-viewer{color:#5DCAA5;border:1px solid #5DCAA544;background:#5DCAA512;}
+.logout-btn{font-family:'Share Tech Mono',monospace;font-size:10px;color:#4a6280;border:1px solid #1e2d42;padding:4px 10px;border-radius:3px;cursor:pointer;background:transparent;letter-spacing:1px;}
+.logout-btn:hover{color:#e24b4a;border-color:#e24b4a44;}
+.tabs{display:flex;gap:4px;margin-bottom:1.25rem;border-bottom:1px solid #1e2d42;flex-wrap:wrap;}
+.tab{padding:8px 16px;font-size:12px;font-weight:500;letter-spacing:1px;text-transform:uppercase;cursor:pointer;background:transparent;border:none;color:#4a6280;border-bottom:2px solid transparent;margin-bottom:-1px;font-family:'Rajdhani',sans-serif;}
+.tab.active{color:#00d4ff;border-bottom-color:#00d4ff;}
+.tab:hover{color:#c8d6e5;}
+.section{display:none;}
+.section.active{display:block;}
+.metric-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(130px,1fr));gap:10px;margin-bottom:1.25rem;}
+.metric{background:#0d1524;border:1px solid #1e2d42;border-radius:4px;padding:1rem;}
+.metric-label{font-size:10px;color:#4a6280;letter-spacing:1.5px;text-transform:uppercase;font-family:'Share Tech Mono',monospace;margin-bottom:6px;}
+.metric-value{font-size:20px;font-weight:600;color:#00d4ff;font-family:'Share Tech Mono',monospace;}
+.card{background:#0d1524;border:1px solid #1e2d42;border-radius:6px;padding:1.1rem 1.25rem;margin-bottom:1rem;}
+.card-title{font-size:10px;font-weight:500;letter-spacing:2px;text-transform:uppercase;color:#4a6280;font-family:'Share Tech Mono',monospace;margin-bottom:1rem;padding-bottom:8px;border-bottom:1px solid #1e2d42;}
+table{width:100%;border-collapse:collapse;font-size:13px;}
+th{text-align:left;font-size:10px;font-weight:500;color:#4a6280;letter-spacing:1.5px;text-transform:uppercase;font-family:'Share Tech Mono',monospace;padding:7px 8px;border-bottom:1px solid #1e2d42;}
+td{padding:8px 8px;border-bottom:1px solid #0f1a2a;color:#c8d6e5;vertical-align:middle;}
+tr:last-child td{border-bottom:none;}
+tr:hover td{background:#111d2e;}
+input[type="text"],input[type="number"],select{width:100%;font-size:13px;background:#080e1a;color:#c8d6e5;border:1px solid #1e2d42;border-radius:4px;padding:7px 10px;font-family:'Rajdhani',sans-serif;outline:none;}
+input:focus,select:focus{border-color:#00d4ff44;}
+select option{background:#0d1524;}
+.form-row{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:10px;margin-bottom:12px;align-items:end;}
+.form-label{font-size:10px;color:#4a6280;letter-spacing:1.5px;text-transform:uppercase;font-family:'Share Tech Mono',monospace;margin-bottom:5px;}
+.btn{padding:7px 16px;border-radius:4px;border:1px solid #1e2d42;font-size:11px;font-weight:500;letter-spacing:1px;text-transform:uppercase;cursor:pointer;background:transparent;color:#c8d6e5;font-family:'Rajdhani',sans-serif;}
+.btn-primary{background:#00d4ff18;color:#00d4ff;border-color:#00d4ff44;}
+.btn-primary:hover{background:#00d4ff28;}
+.btn-danger{background:#e24b4a18;color:#e24b4a;border-color:#e24b4a44;}
+.btn-danger:hover{background:#e24b4a28;}
+.btn-warn{background:#EF9F2718;color:#EF9F27;border-color:#EF9F2744;}
+.btn-warn:hover{background:#EF9F2728;}
+.badge-1{display:inline-block;font-size:10px;padding:2px 9px;border-radius:3px;background:#EF9F2722;color:#EF9F27;border:1px solid #EF9F2744;font-family:'Share Tech Mono',monospace;letter-spacing:1px;}
+.badge-2{display:inline-block;font-size:10px;padding:2px 9px;border-radius:3px;background:#85B7EB22;color:#85B7EB;border:1px solid #85B7EB44;font-family:'Share Tech Mono',monospace;letter-spacing:1px;}
+.badge-3{display:inline-block;font-size:10px;padding:2px 9px;border-radius:3px;background:#5DCAA522;color:#5DCAA5;border:1px solid #5DCAA544;font-family:'Share Tech Mono',monospace;letter-spacing:1px;}
+.pos{color:#5DCAA5;font-family:'Share Tech Mono',monospace;}
+.neg{color:#e24b4a;font-family:'Share Tech Mono',monospace;}
+.mono{font-family:'Share Tech Mono',monospace;font-size:12px;}
+.token-pill{display:inline-flex;align-items:center;gap:3px;font-size:10px;padding:2px 8px;border-radius:3px;background:#0a1220;border:1px solid #1e2d42;margin:2px;color:#4a6280;font-family:'Share Tech Mono',monospace;}
+.token-pill.on{background:#00d4ff14;color:#00d4ff;border-color:#00d4ff33;}
+.warn-box{background:#EF9F2710;border:1px solid #EF9F2730;border-radius:4px;padding:10px 14px;font-size:11px;color:#EF9F27;margin-bottom:1rem;font-family:'Share Tech Mono',monospace;line-height:1.7;}
+.scroll-x{overflow-x:auto;}
+.se-name{font-weight:600;color:#e8f4f8;}
+.rank-num{font-family:'Share Tech Mono',monospace;font-size:12px;color:#4a6280;}
+.audit-action{font-size:11px;color:#c8d6e5;}
+.audit-time{font-size:10px;color:#4a6280;font-family:'Share Tech Mono',monospace;}
+.undo-btn{font-size:10px;padding:2px 8px;border-radius:3px;border:1px solid #e24b4a44;color:#e24b4a;background:transparent;cursor:pointer;font-family:'Share Tech Mono',monospace;letter-spacing:1px;}
+.undo-btn:hover{background:#e24b4a18;}
+.undo-btn:disabled{opacity:0.3;cursor:default;}
+.save-indicator{font-size:10px;font-family:'Share Tech Mono',monospace;color:#4a6280;}
+.save-indicator.ok{color:#5DCAA5;}
+.save-indicator.err{color:#e24b4a;}
+.loading{text-align:center;padding:3rem;font-family:'Share Tech Mono',monospace;font-size:13px;color:#4a6280;letter-spacing:2px;}
+</style>
+</head>
+<body>
+
+<div id="login-screen" class="login-screen">
+  <div class="login-box">
+    <div class="login-logo">
+      <div class="login-logo-mark">SE</div>
+      <div class="login-title">SPIFF Tracker</div>
+      <div class="login-sub">Sales Engineer Performance Intelligence</div>
+    </div>
+    <div class="login-mode-btns">
+      <button class="login-mode-btn active" id="mode-admin" onclick="setLoginMode('admin')">Admin</button>
+      <button class="login-mode-btn" id="mode-viewer" onclick="setLoginMode('viewer')">View only</button>
+    </div>
+    <div id="admin-fields">
+      <div class="login-field">
+        <label class="login-label">Password</label>
+        <input type="password" id="login-pass" class="login-input" placeholder="Enter admin password" onkeydown="if(event.key==='Enter')doLogin()" />
+      </div>
+    </div>
+    <div id="viewer-fields" style="display:none">
+      <div class="login-field">
+        <label class="login-label">Your name</label>
+        <select id="viewer-name" class="login-input"></select>
+      </div>
+    </div>
+    <button class="login-btn" onclick="doLogin()">Access dashboard</button>
+    <div id="login-err" class="login-err"></div>
+  </div>
+</div>
+
+<div id="main-app" class="app">
+  <div class="app-header">
+    <div class="logo-mark">SE</div>
+    <div>
+      <div class="app-title">SPIFF Token Tracker</div>
+      <div class="app-sub">Sales Engineer Performance Intelligence Framework</div>
+    </div>
+    <div class="header-right">
+      <span id="save-indicator" class="save-indicator"></span>
+      <span class="quarter-badge">Q NEXT</span>
+      <span id="role-badge" class="role-badge role-admin">ADMIN</span>
+      <button class="logout-btn" onclick="doLogout()">logout</button>
+    </div>
+  </div>
+
+  <div class="tabs" id="tab-bar">
+    <button class="tab active" onclick="showTab('leaderboard',this)">Leaderboard</button>
+    <button class="tab" onclick="showTab('opps',this)">Opportunities</button>
+    <button class="tab" onclick="showTab('tokens',this)">Token Assignments</button>
+    <button class="tab" id="tab-trades-btn" onclick="showTab('trades',this)">Token Market</button>
+    <button class="tab" id="tab-audit-btn" onclick="showTab('audit',this)">Audit Log</button>
+  </div>
+
+  <div id="tab-leaderboard" class="section active">
+    <div class="metric-grid" id="summary-metrics"></div>
+    <div class="card">
+      <div class="card-title">Live standings</div>
+      <div class="scroll-x">
+        <table id="leaderboard-table">
+          <thead><tr><th>Rank</th><th>SE</th><th>Tokens used</th><th>Avail</th><th>Proj. revenue</th><th>Risk</th><th>Bank balance</th></tr></thead>
+          <tbody></tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <div id="tab-opps" class="section">
+    <div id="opps-admin-controls">
+      <div class="card">
+        <div class="card-title">Add opportunity</div>
+        <div class="form-row">
+          <div><div class="form-label">Opp name</div><input type="text" id="opp-name" placeholder="e.g. Acme Corp expansion" /></div>
+          <div><div class="form-label">Estimated value ($)</div><input type="number" id="opp-value" placeholder="50000" /></div>
+          <div><div class="form-label">Stage</div>
+            <select id="opp-stage">
+              <option value="open">Open</option>
+              <option value="closed_won">Closed won</option>
+              <option value="closed_lost">Closed lost</option>
+            </select>
+          </div>
+          <div style="display:flex;align-items:flex-end;"><button class="btn btn-primary" onclick="addOpp()">+ Add opp</button></div>
+        </div>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-title">All opportunities</div>
+      <div class="scroll-x">
+        <table id="opps-table">
+          <thead><tr><th>Opp name</th><th>Value</th><th>Stage</th><th>Tokens assigned</th><th></th></tr></thead>
+          <tbody></tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <div id="tab-tokens" class="section">
+    <div id="tokens-admin-controls">
+      <div class="warn-box">Each SE has 10 tokens. Token 1=10x ($100k) · Token 2=9x ($90k) · ... · Token 10=1x ($10k). Mid-quarter reassignment costs $50,000.</div>
+      <div class="card">
+        <div class="card-title">Assign token</div>
+        <div class="form-row">
+          <div><div class="form-label">SE</div><select id="assign-se" onchange="renderTokensForSE()"></select></div>
+          <div><div class="form-label">Token #</div><select id="assign-token"></select></div>
+          <div><div class="form-label">Opportunity</div><select id="assign-opp"><option value="">-- unassign --</option></select></div>
+          <div style="display:flex;align-items:flex-end;gap:8px;">
+            <button class="btn btn-primary" onclick="assignToken()">Assign</button>
+            <button class="btn btn-warn" onclick="midQuarterReassign()">Mid-Q (-$50k)</button>
+          </div>
+        </div>
+        <div id="se-token-view"></div>
+      </div>
+    </div>
+    <div id="tokens-viewer-view"></div>
+  </div>
+
+  <div id="tab-trades" class="section">
+    <div id="trades-admin-controls">
+      <div class="warn-box">Token purchase price is deducted from buyer's bank and credited to seller. T1=$100k · T2=$90k · T3=$80k · T4=$70k · T5=$60k · T6=$50k · T7=$40k · T8=$30k · T9=$20k · T10=$10k</div>
+      <div class="card">
+        <div class="card-title">Execute trade</div>
+        <div class="form-row">
+          <div><div class="form-label">Seller</div><select id="trade-seller" onchange="populateSellerTokens()"></select></div>
+          <div><div class="form-label">Token to sell</div><select id="trade-token"></select></div>
+          <div><div class="form-label">Buyer</div><select id="trade-buyer"></select></div>
+          <div style="display:flex;align-items:flex-end;"><button class="btn btn-primary" onclick="executeTrade()">Execute trade</button></div>
+        </div>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-title">Trade history</div>
+      <table id="trade-log-table">
+        <thead><tr><th>Seller</th><th>Buyer</th><th>Token</th><th>Price</th><th>Time</th></tr></thead>
+        <tbody></tbody>
+      </table>
+    </div>
+  </div>
+
+  <div id="tab-audit" class="section">
+    <div class="card">
+      <div class="card-title">Audit log — all changes (most recent first)</div>
+      <div class="scroll-x">
+        <table id="audit-table">
+          <thead><tr><th>Time</th><th>Action</th><th>Details</th><th id="undo-col"></th></tr></thead>
+          <tbody></tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+const SE_NAMES=['Riley Finger','Michael Cieslak','Adam Kissee','Shaun Benson','Eric Lorenzo','Katherine Morales','Brandon Quach','David Blagaila','Karthik Pradeep','Katherine Peppler','Mikinzi Strykul','Rohan Sahoo'];
+const TOKEN_COUNT=10,STARTING_BANK=25000,REASSIGN_COST=50000;
+const TMULT=t=>TOKEN_COUNT-t+1;
+const TVAL=t=>TMULT(t)*10000;
+const fmt=n=>'$'+Math.round(n).toLocaleString();
+const ts=()=>new Date().toLocaleString();
+
+let currentRole=null,currentUser=null,loginMode='admin';
+let state={ses:[],opps:[],auditLog:[]};
+let oppCounter=1;
+
+function initState(){
+  state={
+    ses:SE_NAMES.map((name,i)=>({id:i,name,bank:STARTING_BANK,tokens:Array.from({length:TOKEN_COUNT},(_,j)=>({num:j+1,oppId:null,ownerId:i}))})),
+    opps:[],auditLog:[]
+  };
+  oppCounter=1;
+}
+
+async function apiGet(){
+  const r=await fetch('/api/state');
+  if(!r.ok)return null;
+  return r.json();
+}
+
+async function apiSave(adminPass){
+  const ind=document.getElementById('save-indicator');
+  if(ind){ind.textContent='saving...';ind.className='save-indicator';}
+  const r=await fetch('/api/state',{method:'POST',headers:{'Content-Type':'application/json','x-admin-pass':adminPass},body:JSON.stringify({state,oppCounter})});
+  if(r.ok){
+    if(ind){ind.textContent='saved';ind.className='save-indicator ok';setTimeout(()=>{ind.textContent='';},2500);}
+  } else {
+    if(ind){ind.textContent='save error';ind.className='save-indicator err';}
+  }
+}
+
+let _adminPass='';
+
+async function saveState(){
+  if(currentRole==='admin')await apiSave(_adminPass);
+}
+
+async function loadState(){
+  const data=await apiGet();
+  if(data&&data.state){
+    state=data.state;
+    oppCounter=data.oppCounter||1;
+  } else {
+    initState();
+  }
+}
+
+function setLoginMode(mode){
+  loginMode=mode;
+  document.getElementById('mode-admin').className='login-mode-btn'+(mode==='admin'?' active':'');
+  document.getElementById('mode-viewer').className='login-mode-btn'+(mode==='viewer'?' active':'');
+  document.getElementById('admin-fields').style.display=mode==='admin'?'block':'none';
+  document.getElementById('viewer-fields').style.display=mode==='viewer'?'block':'none';
+}
+
+async function doLogin(){
+  const err=document.getElementById('login-err');
+  err.textContent='// authenticating...';
+  if(loginMode==='admin'){
+    const pass=document.getElementById('login-pass').value;
+    const r=await fetch('/api/auth',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({password:pass})});
+    if(!r.ok){err.textContent='// incorrect password';return;}
+    _adminPass=pass;
+    currentRole='admin';currentUser='Admin';
+  } else {
+    const name=document.getElementById('viewer-name').value;
+    if(!name){err.textContent='// select your name';return;}
+    currentRole='viewer';currentUser=name;
+  }
+  err.textContent='';
+  await loadState();
+  document.getElementById('login-screen').style.display='none';
+  document.getElementById('main-app').style.display='block';
+  document.getElementById('role-badge').textContent=currentRole==='admin'?'ADMIN':'VIEW ONLY';
+  document.getElementById('role-badge').className='role-badge '+(currentRole==='admin'?'role-admin':'role-viewer');
+  applyRoleUI();
+  renderAll();
+}
+
+function doLogout(){
+  currentRole=null;currentUser=null;_adminPass='';
+  document.getElementById('main-app').style.display='none';
+  document.getElementById('login-screen').style.display='flex';
+  document.getElementById('login-pass').value='';
+}
+
+function applyRoleUI(){
+  const isAdmin=currentRole==='admin';
+  ['opps-admin-controls','tokens-admin-controls','trades-admin-controls'].forEach(id=>{
+    const el=document.getElementById(id);
+    if(el)el.style.display=isAdmin?'block':'none';
+  });
+  document.getElementById('tab-audit-btn').style.display=isAdmin?'inline-block':'none';
+  const uc=document.getElementById('undo-col');
+  if(uc)uc.textContent=isAdmin?'Undo':'';
+}
+
+function showTab(name,el){
+  document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));
+  document.querySelectorAll('.section').forEach(s=>s.classList.remove('active'));
+  el.classList.add('active');
+  document.getElementById('tab-'+name).classList.add('active');
+  renderAll();
+}
+
+function renderAll(){
+  const active=document.querySelector('.section.active');
+  if(!active)return;
+  const id=active.id;
+  if(id==='tab-leaderboard')renderLeaderboard();
+  else if(id==='tab-opps')renderOpps();
+  else if(id==='tab-tokens')renderTokenTab();
+  else if(id==='tab-trades')renderTradeTab();
+  else if(id==='tab-audit')renderAudit();
+}
+
+function getSEScores(){
+  return state.ses.map(se=>{
+    let revenue=0,risk=0;
+    se.tokens.forEach(tok=>{
+      if(tok.oppId!==null){
+        const opp=state.opps.find(o=>o.id===tok.oppId);
+        if(opp){
+          const m=TMULT(tok.num);
+          if(opp.stage==='closed_won')revenue+=opp.value*m;
+          else if(opp.stage==='closed_lost')risk+=opp.value;
+          else revenue+=opp.value*m;
+        }
+      }
+    });
+    return{...se,revenue,risk,bank:se.bank+revenue-risk,tokensUsed:se.tokens.filter(t=>t.oppId!==null).length};
+  }).sort((a,b)=>b.bank-a.bank);
+}
+
+function renderLeaderboard(){
+  const scores=getSEScores();
+  const total=scores.reduce((s,x)=>s+x.revenue,0);
+  const avgBank=Math.round(scores.reduce((s,x)=>s+x.bank,0)/scores.length);
+  document.getElementById('summary-metrics').innerHTML=`
+    <div class="metric"><div class="metric-label">SEs competing</div><div class="metric-value">${state.ses.length}</div></div>
+    <div class="metric"><div class="metric-label">Opportunities</div><div class="metric-value">${state.opps.length}</div></div>
+    <div class="metric"><div class="metric-label">Proj. revenue</div><div class="metric-value" style="font-size:15px">${fmt(total)}</div></div>
+    <div class="metric"><div class="metric-label">Avg bank</div><div class="metric-value" style="font-size:15px">${fmt(avgBank)}</div></div>
+  `;
+  document.querySelector('#leaderboard-table tbody').innerHTML=scores.map((se,i)=>{
+    const badge=i===0?'<span class="badge-1">1st</span>':i===1?'<span class="badge-2">2nd</span>':i===2?'<span class="badge-3">3rd</span>':`<span class="rank-num">${i+1}</span>`;
+    return`<tr><td>${badge}</td><td><span class="se-name">${se.name}</span></td><td class="mono">${se.tokensUsed}/${TOKEN_COUNT}</td><td class="mono">${TOKEN_COUNT-se.tokensUsed}</td><td class="mono" style="color:#5DCAA5">${fmt(se.revenue)}</td><td class="mono" style="color:${se.risk>0?'#e24b4a':'#4a6280'}">${se.risk>0?'-'+fmt(se.risk):'—'}</td><td><span class="${se.bank>=STARTING_BANK?'pos':'neg'}">${fmt(se.bank)}</span></td></tr>`;
+  }).join('');
+}
+
+async function addOpp(){
+  const name=document.getElementById('opp-name').value.trim();
+  const value=parseFloat(document.getElementById('opp-value').value);
+  const stage=document.getElementById('opp-stage').value;
+  if(!name||isNaN(value)||value<=0){alert('Enter a valid name and value.');return;}
+  const snap=JSON.stringify({state,oppCounter});
+  state.opps.push({id:oppCounter++,name,value,stage});
+  addAudit('ADD OPP',`${name} — ${fmt(value)} [${stage}]`,snap);
+  await saveState();renderOpps();
+}
+
+async function updateOppStage(id,stage){
+  const opp=state.opps.find(o=>o.id===id);if(!opp)return;
+  const snap=JSON.stringify({state,oppCounter});
+  const old=opp.stage;opp.stage=stage;
+  addAudit('UPDATE OPP',`${opp.name}: ${old} → ${stage}`,snap);
+  await saveState();renderOpps();
+}
+
+async function removeOpp(id){
+  const opp=state.opps.find(o=>o.id===id);
+  if(!opp||!confirm(`Remove "${opp.name}"?`))return;
+  const snap=JSON.stringify({state,oppCounter});
+  state.ses.forEach(se=>se.tokens.forEach(tok=>{if(tok.oppId===id)tok.oppId=null;}));
+  state.opps=state.opps.filter(o=>o.id!==id);
+  addAudit('REMOVE OPP',opp.name,snap);
+  await saveState();renderOpps();
+}
+
+function renderOpps(){
+  const tbody=document.querySelector('#opps-table tbody');
+  const isAdmin=currentRole==='admin';
+  if(state.opps.length===0){tbody.innerHTML='<tr><td colspan="5" style="color:#4a6280;text-align:center;padding:1.5rem;font-family:Share Tech Mono,monospace;font-size:11px">// no opportunities loaded</td></tr>';return;}
+  tbody.innerHTML=state.opps.map(opp=>{
+    const assigned=state.ses.flatMap(se=>se.tokens.filter(t=>t.oppId===opp.id).map(t=>`<span class="token-pill on">${se.name.split(' ')[0]} T${t.num}·${TMULT(t.num)}x</span>`)).join('');
+    const stageSel=isAdmin
+      ?`<select onchange="updateOppStage(${opp.id},this.value)" style="width:130px;font-size:12px;"><option value="open"${opp.stage==='open'?' selected':''}>Open</option><option value="closed_won"${opp.stage==='closed_won'?' selected':''}>Closed won</option><option value="closed_lost"${opp.stage==='closed_lost'?' selected':''}>Closed lost</option></select>`
+      :`<span class="mono" style="font-size:11px;color:${opp.stage==='closed_won'?'#5DCAA5':opp.stage==='closed_lost'?'#e24b4a':'#EF9F27'}">${opp.stage.replace('_',' ')}</span>`;
+    return`<tr><td style="color:#e8f4f8;font-weight:600">${opp.name}</td><td class="mono" style="color:#5DCAA5">${fmt(opp.value)}</td><td>${stageSel}</td><td>${assigned||'<span style="color:#4a6280;font-size:10px;font-family:Share Tech Mono,monospace">none</span>'}</td><td>${isAdmin?`<button class="btn btn-danger" style="font-size:10px;padding:3px 10px" onclick="removeOpp(${opp.id})">Remove</button>`:''}</td></tr>`;
+  }).join('');
+}
+
+function renderTokenTab(){
+  const isAdmin=currentRole==='admin';
+  if(isAdmin){
+    document.getElementById('assign-se').innerHTML=state.ses.map(se=>`<option value="${se.id}">${se.name}</option>`).join('');
+    populateAssignTokenOptions();
+    renderTokensForSE();
+    document.getElementById('assign-opp').innerHTML='<option value="">-- unassign --</option>'+state.opps.map(o=>`<option value="${o.id}">${o.name} (${fmt(o.value)})</option>`).join('');
+  } else {
+    const el=document.getElementById('tokens-viewer-view');
+    const mySE=state.ses.find(s=>s.name===currentUser);
+    el.innerHTML=mySE
+      ?`<div class="card"><div class="card-title">${mySE.name} — your token assignments</div><div>${mySE.tokens.map(t=>{const opp=t.oppId!==null?state.opps.find(o=>o.id===t.oppId):null;return`<span class="token-pill ${opp?'on':''}">T${t.num}·${TMULT(t.num)}x ${opp?'→ '+opp.name:'unassigned'}</span>`;}).join('')}</div><div style="margin-top:12px;font-size:11px;color:#4a6280;font-family:Share Tech Mono,monospace">bank balance: <span style="color:#00d4ff">${fmt(mySE.bank)}</span></div></div>`
+      :'<div class="card"><div style="color:#4a6280;font-family:Share Tech Mono,monospace;font-size:11px">// account not found</div></div>';
+  }
+}
+
+function populateAssignTokenOptions(){
+  const seId=parseInt(document.getElementById('assign-se').value);
+  const se=state.ses.find(s=>s.id===seId);if(!se)return;
+  document.getElementById('assign-token').innerHTML=se.tokens.map(t=>`<option value="${t.num}">Token ${t.num} — ${TMULT(t.num)}x = ${fmt(TVAL(t.num))}</option>`).join('');
+}
+
+function renderTokensForSE(){
+  populateAssignTokenOptions();
+  const seId=parseInt(document.getElementById('assign-se').value);
+  const se=state.ses.find(s=>s.id===seId);if(!se)return;
+  document.getElementById('se-token-view').innerHTML=`<div style="margin-top:1rem;border-top:1px solid #1e2d42;padding-top:1rem"><div class="form-label" style="margin-bottom:8px">${se.name} — bank: <span style="color:#00d4ff;font-family:Share Tech Mono,monospace">${fmt(se.bank)}</span></div><div>${se.tokens.map(t=>{const opp=t.oppId!==null?state.opps.find(o=>o.id===t.oppId):null;return`<span class="token-pill ${opp?'on':''}">T${t.num}·${TMULT(t.num)}x ${opp?'→ '+opp.name:'unassigned'}</span>`;}).join('')}</div></div>`;
+}
+
+async function assignToken(){
+  const seId=parseInt(document.getElementById('assign-se').value);
+  const tokenNum=parseInt(document.getElementById('assign-token').value);
+  const oppIdRaw=document.getElementById('assign-opp').value;
+  const oppId=oppIdRaw===''?null:parseInt(oppIdRaw);
+  const se=state.ses.find(s=>s.id===seId);if(!se)return;
+  const tok=se.tokens.find(t=>t.num===tokenNum);if(!tok)return;
+  const snap=JSON.stringify({state,oppCounter});
+  const oppName=oppId!==null?(state.opps.find(o=>o.id===oppId)||{name:'unknown'}).name:'(unassigned)';
+  tok.oppId=oppId;
+  addAudit('ASSIGN TOKEN',`${se.name} T${tokenNum} → ${oppName}`,snap);
+  await saveState();renderTokensForSE();renderOpps();
+}
+
+async function midQuarterReassign(){
+  const seId=parseInt(document.getElementById('assign-se').value);
+  const se=state.ses.find(s=>s.id===seId);if(!se)return;
+  if(!confirm(`Charge ${se.name} $50,000 for mid-quarter reassignment?\nBank: ${fmt(se.bank)} → ${fmt(se.bank-REASSIGN_COST)}`))return;
+  const snap=JSON.stringify({state,oppCounter});
+  se.bank-=REASSIGN_COST;
+  addAudit('MID-Q REASSIGN',`${se.name} — charged $50,000`,snap);
+  await saveState();renderTokensForSE();
+}
+
+function renderTradeTab(){
+  ['trade-seller','trade-buyer'].forEach(id=>{document.getElementById(id).innerHTML=state.ses.map(se=>`<option value="${se.id}">${se.name}</option>`).join('');});
+  document.getElementById('trade-buyer').selectedIndex=1;
+  populateSellerTokens();renderTradeLog();
+}
+
+function populateSellerTokens(){
+  const seId=parseInt(document.getElementById('trade-seller').value);
+  const se=state.ses.find(s=>s.id===seId);if(!se)return;
+  document.getElementById('trade-token').innerHTML=se.tokens.map(t=>`<option value="${t.num}">Token ${t.num} (${TMULT(t.num)}x) — ${fmt(TVAL(t.num))}</option>`).join('');
+}
+
+async function executeTrade(){
+  const sellerId=parseInt(document.getElementById('trade-seller').value);
+  const buyerId=parseInt(document.getElementById('trade-buyer').value);
+  const tokenNum=parseInt(document.getElementById('trade-token').value);
+  if(sellerId===buyerId){alert('Seller and buyer must be different.');return;}
+  const seller=state.ses.find(s=>s.id===sellerId);
+  const buyer=state.ses.find(s=>s.id===buyerId);
+  const tokIdx=seller.tokens.findIndex(t=>t.num===tokenNum);
+  if(tokIdx===-1){alert('Token not found on seller.');return;}
+  const price=TVAL(tokenNum);
+  if(buyer.bank<price){alert(`${buyer.name} needs ${fmt(price)} but only has ${fmt(buyer.bank)}.`);return;}
+  if(!confirm(`Transfer Token ${tokenNum} from ${seller.name} to ${buyer.name}\nPrice: ${fmt(price)}\nBuyer bank: ${fmt(buyer.bank)} → ${fmt(buyer.bank-price)}\nSeller bank: ${fmt(seller.bank)} → ${fmt(seller.bank+price)}`))return;
+  const snap=JSON.stringify({state,oppCounter});
+  buyer.bank-=price;seller.bank+=price;
+  const tok=seller.tokens.splice(tokIdx,1)[0];
+  tok.ownerId=buyerId;
+  buyer.tokens.push(tok);
+  buyer.tokens.sort((a,b)=>a.num-b.num);
+  addAudit('TOKEN TRADE',`${seller.name} → ${buyer.name}: T${tokenNum} for ${fmt(price)}`,snap);
+  await saveState();populateSellerTokens();renderTradeLog();
+}
+
+function renderTradeLog(){
+  const trades=state.auditLog.filter(a=>a.action==='TOKEN TRADE');
+  const tbody=document.querySelector('#trade-log-table tbody');
+  if(trades.length===0){tbody.innerHTML='<tr><td colspan="5" style="color:#4a6280;text-align:center;padding:1rem;font-family:Share Tech Mono,monospace;font-size:11px">// no trades executed</td></tr>';return;}
+  tbody.innerHTML=trades.map(t=>{
+    const m=t.details.match(/^(.+) → (.+): T(\d+) for (.+)$/);
+    if(!m)return`<tr><td colspan="5" class="mono">${t.details}</td></tr>`;
+    return`<tr><td style="color:#e8f4f8">${m[1]}</td><td style="color:#00d4ff">${m[2]}</td><td class="mono">Token ${m[3]} · ${TMULT(parseInt(m[3]))}x</td><td class="mono" style="color:#EF9F27">${m[4]}</td><td class="audit-time">${t.time}</td></tr>`;
+  }).join('');
+}
+
+function addAudit(action,details,snap){
+  state.auditLog.unshift({id:Date.now(),time:ts(),action,details,undoSnapshot:snap||null});
+  if(state.auditLog.length>150)state.auditLog.pop();
+}
+
+async function undoEntry(id){
+  const entry=state.auditLog.find(a=>a.id===id);
+  if(!entry||!entry.undoSnapshot){alert('Cannot undo.');return;}
+  if(!confirm('Undo this action and restore the previous state?'))return;
+  const snap=JSON.parse(entry.undoSnapshot);
+  state=snap.state;oppCounter=snap.oppCounter;
+  addAudit('UNDO','Reverted: '+entry.action,null);
+  await saveState();renderAll();
+}
+
+function renderAudit(){
+  const isAdmin=currentRole==='admin';
+  const tbody=document.querySelector('#audit-table tbody');
+  if(state.auditLog.length===0){tbody.innerHTML='<tr><td colspan="4" style="color:#4a6280;text-align:center;padding:1.5rem;font-family:Share Tech Mono,monospace;font-size:11px">// no actions recorded</td></tr>';return;}
+  tbody.innerHTML=state.auditLog.map((entry,i)=>{
+    const canUndo=isAdmin&&entry.undoSnapshot&&i===0;
+    const undoCell=isAdmin?`<td><button class="undo-btn" ${canUndo?'':'disabled'} onclick="undoEntry(${entry.id})">${canUndo?'↩ undo':'—'}</button></td>`:'';
+    return`<tr><td class="audit-time">${entry.time}</td><td><span style="font-size:10px;font-family:Share Tech Mono,monospace;color:#00d4ff;border:1px solid #00d4ff33;padding:2px 6px;border-radius:3px;">${entry.action}</span></td><td class="audit-action">${entry.details}</td>${undoCell}</tr>`;
+  }).join('');
+}
+
+(()=>{
+  const vsel=document.getElementById('viewer-name');
+  vsel.innerHTML=SE_NAMES.map(n=>`<option value="${n}">${n}</option>`).join('');
+})();
+</script>
+</body>
+</html>

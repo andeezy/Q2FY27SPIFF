@@ -1,0 +1,4 @@
+[[ d1_databases ]]
+binding = "DB"
+database_name = "spiff-tracker"
+database_id = "bd10b325-a027-48da-91c1-34f411c4d1ab"
