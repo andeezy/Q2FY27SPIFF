@@ -402,8 +402,9 @@ function getSEScores(){
       }
     });
     const bank=se.bank+closedWonRev-closedLostRisk;
+    const totalTokens=se.tokens.length;
     const tokensUsed=se.tokens.filter(t=>t.oppId!==null).length;
-    return{...se,closedWonRev,closedLostRisk,openProjRev,bank,tokensUsed};
+    return{...se,closedWonRev,closedLostRisk,openProjRev,bank,totalTokens,tokensUsed};
   }).sort((a,b)=>b.bank-a.bank);
 }
 
@@ -424,8 +425,8 @@ function renderLeaderboard(){
     return`<tr>
       <td>${badge}</td>
       <td><span class="se-name">${se.name}</span></td>
-      <td class="mono">${se.tokensUsed}/${TOKEN_COUNT}</td>
-      <td class="mono">${TOKEN_COUNT-se.tokensUsed}</td>
+      <td class="mono">${se.tokensUsed}/${se.totalTokens}</td>
+      <td class="mono">${se.totalTokens-se.tokensUsed}</td>
       <td class="mono" style="color:#EF9F27">${se.openProjRev>0?fmt(se.openProjRev):'—'}</td>
       <td class="mono" style="color:#5DCAA5">${se.closedWonRev>0?fmt(se.closedWonRev):'—'}</td>
       <td class="mono" style="color:${se.closedLostRisk>0?'#e24b4a':'#4a6280'}">${se.closedLostRisk>0?'-'+fmt(se.closedLostRisk):'—'}</td>
