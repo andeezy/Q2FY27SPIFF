@@ -1,4 +1,8 @@
-[[ d1_databases ]]
+name = "spiff-tracker"
+compatibility_date = "2026-04-17"
+pages_build_output_dir = "./public"
+
+[[d1_databases]]
 binding = "DB"
 database_name = "spiff-tracker"
 database_id = "bd10b325-a027-48da-91c1-34f411c4d1ab"
