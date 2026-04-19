@@ -169,9 +169,9 @@ select option{background:#0d1524;}
       <div class="card">
         <div class="card-title">Bulk upload via CSV</div>
         <div style="font-size:11px;color:#4a6280;font-family:'Share Tech Mono',monospace;margin-bottom:12px;line-height:1.8;">
-          Expected columns: <span style="color:#027DAD">opp_name, value, stage, se_name, token_num</span><br>
+          Expected columns: <span style="color:#027DAD">opp_name, value, stage, sf_url, se_name, token_num</span><br>
           stage = open / closed_won / closed_lost (defaults to open)<br>
-          se_name + token_num are optional — leave blank to load opp without assigning
+          sf_url, se_name + token_num are optional — leave blank if not needed
         </div>
         <div style="display:flex;align-items:center;gap:12px;flex-wrap:wrap;">
           <input type="file" id="csv-file" accept=".csv" style="font-size:12px;color:#c8d6e5;background:#080e1a;border:1px solid #1e2d42;border-radius:4px;padding:6px 10px;flex:1;min-width:200px;"/>
@@ -185,6 +185,7 @@ select option{background:#0d1524;}
         <div class="form-row">
           <div><div class="form-label">Opp name</div><input type="text" id="opp-name" placeholder="e.g. Acme Corp expansion"/></div>
           <div><div class="form-label">Estimated value ($)</div><input type="number" id="opp-value" placeholder="50000"/></div>
+          <div><div class="form-label">Salesforce URL</div><input type="text" id="opp-sf" placeholder="https://verkada.lightning.force.com/..."/></div>
           <div><div class="form-label">Stage</div>
             <select id="opp-stage">
               <option value="open">Open</option>
@@ -200,7 +201,7 @@ select option{background:#0d1524;}
       <div class="card-title">All opportunities</div>
       <div class="scroll-x">
         <table id="opps-table">
-          <thead><tr><th>Opp name</th><th>Value</th><th>Stage</th><th>Token assigned</th><th></th></tr></thead>
+          <thead><tr><th>Opp name</th><th>Value</th><th>Stage</th><th>SF link</th><th>Token assigned</th><th></th></tr></thead>
           <tbody></tbody>
         </table>
       </div>
@@ -431,8 +432,12 @@ async function addOpp(){
   const name=document.getElementById('opp-name').value.trim();
   const value=parseFloat(document.getElementById('opp-value').value);
   const stage=document.getElementById('opp-stage').value;
+  const sfUrl=document.getElementById('opp-sf').value.trim();
   if(!name||isNaN(value)||value<=0){alert('Enter a valid name and value.');return;}
-  state.opps.push({id:oppCounter++,name,value,stage});
+  state.opps.push({id:oppCounter++,name,value,stage,sfUrl});
+  document.getElementById('opp-name').value='';
+  document.getElementById('opp-value').value='';
+  document.getElementById('opp-sf').value='';
   await saveState();renderOpps();
 }
 
@@ -453,7 +458,7 @@ async function removeOpp(id){
 function renderOpps(){
   const tbody=document.querySelector('#opps-table tbody');
   const isAdmin=currentRole==='admin';
-  if(state.opps.length===0){tbody.innerHTML='<tr><td colspan="5" style="color:#4a6280;text-align:center;padding:1.5rem;font-family:Share Tech Mono,monospace;font-size:11px">// no opportunities loaded</td></tr>';return;}
+  if(state.opps.length===0){tbody.innerHTML='<tr><td colspan="6" style="color:#4a6280;text-align:center;padding:1.5rem;font-family:Share Tech Mono,monospace;font-size:11px">// no opportunities loaded</td></tr>';return;}
   tbody.innerHTML=state.opps.map(opp=>{
     let assignedPill='<span style="color:#4a6280;font-size:10px;font-family:Share Tech Mono,monospace">none</span>';
     for(const se of state.ses){const tok=se.tokens.find(t=>t.oppId===opp.id);if(tok){assignedPill=`<span class="token-pill on">${se.name.split(' ')[0]} T${tok.num}·${TMULT(tok.num)}x</span>`;break;}}
@@ -461,10 +466,14 @@ function renderOpps(){
     const stageSel=isAdmin
       ?`<select onchange="updateOppStage(${opp.id},this.value)" style="width:130px;font-size:12px;"><option value="open"${opp.stage==='open'?' selected':''}>Open</option><option value="closed_won"${opp.stage==='closed_won'?' selected':''}>Closed won</option><option value="closed_lost"${opp.stage==='closed_lost'?' selected':''}>Closed lost</option></select>`
       :`<span class="mono" style="font-size:11px;color:${stageColor}">${opp.stage.replace('_',' ')}</span>`;
+    const sfCell=opp.sfUrl
+      ?`<td><a href="${opp.sfUrl}" target="_blank" style="color:#027DAD;font-size:11px;font-family:'Share Tech Mono',monospace;text-decoration:none;border:1px solid #027DAD33;padding:2px 8px;border-radius:3px;">SF ↗</a></td>`
+      :`<td><span style="color:#4a6280;font-size:10px;font-family:'Share Tech Mono',monospace">—</span></td>`;
     return`<tr>
       <td style="color:#e8f4f8;font-weight:600">${opp.name}</td>
       <td class="mono" style="color:#5DCAA5">${fmt(opp.value)}</td>
       <td>${stageSel}</td>
+      ${sfCell}
       <td>${assignedPill}</td>
       <td>${isAdmin?`<button class="btn btn-danger" style="font-size:10px;padding:3px 10px" onclick="removeOpp(${opp.id})">Remove</button>`:''}</td>
     </tr>`;
@@ -589,7 +598,7 @@ function renderTradeLog(){
 
 
 function downloadTemplate(){
-  const csv='opp_name,value,stage,se_name,token_num\nAcme Corp Renewal,50000,open,Riley Finger,10\nGlobex Expansion,120000,open,Michael Cieslak,9\n';
+  const csv='opp_name,value,stage,sf_url,se_name,token_num\nAcme Corp Renewal,50000,open,https://verkada.lightning.force.com/abc123,Riley Finger,10\nGlobex Expansion,120000,open,,Michael Cieslak,9\n';
   const a=document.createElement('a');
   a.href='data:text/csv;charset=utf-8,'+encodeURIComponent(csv);
   a.download='spiff_opps_template.csv';
@@ -609,6 +618,7 @@ async function uploadCSV(){
   const nameIdx=headers.indexOf('opp_name');
   const valIdx=headers.indexOf('value');
   const stageIdx=headers.indexOf('stage');
+  const sfIdx=headers.indexOf('sf_url');
   const seIdx=headers.indexOf('se_name');
   const tokenIdx=headers.indexOf('token_num');
 
@@ -621,6 +631,7 @@ async function uploadCSV(){
     const name=cols[nameIdx]||'';
     const value=parseFloat(cols[valIdx]);
     const stage=(cols[stageIdx]||'open').toLowerCase().replace(' ','_');
+    const sfUrl=sfIdx>=0?cols[sfIdx]||'':'';
     const seName=seIdx>=0?cols[seIdx]||'':'';
     const tokenNum=tokenIdx>=0?parseInt(cols[tokenIdx])||0:0;
 
@@ -632,7 +643,7 @@ async function uploadCSV(){
     const alreadyExists=state.opps.find(o=>o.name.toLowerCase()===name.toLowerCase());
     if(alreadyExists){errors.push(`row ${i+1}: "${name}" already exists, skipped`);skipped++;continue;}
 
-    const newOpp={id:oppCounter++,name,value,stage:finalStage};
+    const newOpp={id:oppCounter++,name,value,stage:finalStage,sfUrl};
     state.opps.push(newOpp);
     added++;
 
