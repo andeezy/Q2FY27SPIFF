@@ -252,6 +252,9 @@ select option{background:#0d1524;}
         Live standings
         <span class="tip" data-tip="Bank = $100k start + (closed won deal value × token multiplier) − closed lost deal value. Open deals don't affect bank yet.">?</span>
       </div>
+      <div style="font-size:11px;color:#4a6280;font-family:Share Tech Mono,monospace;margin-bottom:12px;line-height:1.6;">
+        Bank balance determines final ranking · Open deals show as projected only · Game revenue = deal value × token multiplier
+      </div>
       <div class="scroll-x">
         <table id="leaderboard-table">
           <thead><tr>
@@ -823,20 +826,69 @@ function renderTokenTab(){
     const el=document.getElementById('tokens-viewer-view');
     const mySE=state.ses.find(s=>s.name===currentUser);
     if(!mySE){el.innerHTML='<div class="card"><div style="color:#4a6280;font-family:Share Tech Mono,monospace;font-size:11px">// account not found</div></div>';return;}
-    const winStatus=windowOpen?`<div class="success-box" style="margin-top:1rem">✅ Reassignment window is OPEN — contact admin to reassign a token ($100k each)</div>`:`<div class="warn-box" style="margin-top:1rem">🔒 Reassignment window is closed</div>`;
-    el.innerHTML=`<div class="card">
-      <div class="card-title">${mySE.name} — your token assignments</div>
-      <div>${mySE.tokens.map(t=>{
-        const opp=t.oppId!==null?state.opps.find(o=>o.id===t.oppId):null;
-        const burned=t.burned;
-        const used=t.reassignCount||0;
-        const cls=burned?'burned':opp?'on':'';
-        const burnTip=burned?' title="This token is burned — the deal it was assigned to has closed. It cannot be reassigned or sold."':'';
-        return`<span class="token-pill ${cls}"${burnTip}>T${t.num}·${TMULT(t.num)}x ${opp?'→ '+opp.name:'unassigned'}${burned?' 🔥':''} <span style="color:${used>=MAX_REASSIGNS?'#e24b4a':'#4a6280'};font-size:9px">[${used}/${MAX_REASSIGNS}]</span></span>`;
-      }).join('')}</div>
-      <div style="margin-top:12px;font-size:11px;color:#4a6280;font-family:Share Tech Mono,monospace">bank balance: <span style="color:#027DAD">${fmt(mySE.bank)}</span></div>
-      ${winStatus}
-    </div>`;
+    const winStatus=windowOpen
+      ?`<div class="success-box" style="margin-top:1rem">
+          ✅ <strong>Reassignment window is OPEN</strong> — contact the admin to reassign a token to a different opportunity.<br>
+          <span style="color:#4a6280;font-size:11px">Cost: $100,000 per reassignment · Max 2 per token · Burned tokens cannot be reassigned</span>
+        </div>`
+      :`<div class="warn-box" style="margin-top:1rem">
+          🔒 <strong>Reassignment window is closed</strong> — token assignments are locked outside of June 1–5 and July 1–5.<br>
+          <span style="color:#4a6280;font-size:11px">Contact the admin if you believe there is an error with your assignments.</span>
+        </div>`;
+
+    // compute scores for this SE
+    let closedWonRev=0,closedLostRisk=0,openProjRev=0,realRev=0;
+    mySE.tokens.forEach(tok=>{
+      if(tok.oppId!==null){
+        const opp=state.opps.find(o=>o.id===tok.oppId);
+        if(opp){
+          const m=TMULT(tok.num);
+          if(opp.stage==='closed_won'){closedWonRev+=opp.value*m;realRev+=opp.value;}
+          else if(opp.stage==='closed_lost')closedLostRisk+=opp.value;
+          else openProjRev+=opp.value*m;
+        }
+      }
+    });
+    const bank=mySE.bank+closedWonRev-closedLostRisk;
+
+    el.innerHTML=`
+      <div class="info-box">
+        💡 <strong>How to read your tokens:</strong> Each token number is also its multiplier — Token 10 = 10x your deal value added to your bank when it closes won.
+        Tokens marked 🔥 are <strong>burned</strong> (their deal has closed) and cannot be moved or sold.
+        Numbers in brackets show how many reassignments you've used on that token [used/max].
+      </div>
+      <div class="card">
+        <div class="card-title">${mySE.name} — your token assignments</div>
+        <div style="margin-bottom:1rem">${mySE.tokens.map(t=>{
+          const opp=t.oppId!==null?state.opps.find(o=>o.id===t.oppId):null;
+          const burned=t.burned;
+          const used=t.reassignCount||0;
+          const cls=burned?'burned':opp?'on':'';
+          const stageColor=opp?(opp.stage==='closed_won'?'#5DCAA5':opp.stage==='closed_lost'?'#e24b4a':'#EF9F27'):'';
+          const stageBadge=opp?`<span style="font-size:9px;color:${stageColor};margin-left:2px">${opp.stage.replace('_',' ')}</span>`:'';
+          const burnTip=burned?' title="BURNED — this deal has closed. Token is frozen and cannot be reassigned or sold."':'';
+          const sfLink=opp&&opp.sfUrl?`<a href="${opp.sfUrl}" target="_blank" style="color:#027DAD;font-size:9px;margin-left:4px;text-decoration:none;" title="Open in Salesforce">SF↗</a>`:'';
+          return`<span class="token-pill ${cls}"${burnTip}>T${t.num}·${TMULT(t.num)}x ${opp?'→ '+opp.name:'unassigned'}${stageBadge}${sfLink}${burned?' 🔥':''}<span style="color:${used>=MAX_REASSIGNS?'#e24b4a':'#4a6280'};font-size:9px;margin-left:3px">[${used}/${MAX_REASSIGNS}]</span></span>`;
+        }).join('')}</div>
+
+        <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(130px,1fr));gap:8px;margin:1rem 0;padding:1rem;background:#080e1a;border-radius:4px;border:1px solid #1e2d42;">
+          <div><div style="font-size:10px;color:#4a6280;font-family:Share Tech Mono,monospace;margin-bottom:4px;">BANK BALANCE</div><div style="font-size:16px;font-weight:600;color:#027DAD;font-family:Share Tech Mono,monospace;">${fmt(bank)}</div></div>
+          <div title="Closed won deal value × token multiplier"><div style="font-size:10px;color:#4a6280;font-family:Share Tech Mono,monospace;margin-bottom:4px;">GAME REVENUE ✓</div><div style="font-size:16px;font-weight:600;color:#5DCAA5;font-family:Share Tech Mono,monospace;">${closedWonRev>0?fmt(closedWonRev):'—'}</div></div>
+          <div title="Raw deal value of closed won opps, no multiplier"><div style="font-size:10px;color:#4a6280;font-family:Share Tech Mono,monospace;margin-bottom:4px;">REAL REVENUE</div><div style="font-size:16px;font-weight:600;color:#85B7EB;font-family:Share Tech Mono,monospace;">${realRev>0?fmt(realRev):'—'}</div></div>
+          <div title="Open deal value × token multiplier. Not in bank yet."><div style="font-size:10px;color:#4a6280;font-family:Share Tech Mono,monospace;margin-bottom:4px;">PROJECTED (OPEN)</div><div style="font-size:16px;font-weight:600;color:#EF9F27;font-family:Share Tech Mono,monospace;">${openProjRev>0?fmt(openProjRev):'—'}</div></div>
+          ${closedLostRisk>0?`<div title="Raw value deducted from bank for closed lost deals"><div style="font-size:10px;color:#4a6280;font-family:Share Tech Mono,monospace;margin-bottom:4px;">RISK (LOST)</div><div style="font-size:16px;font-weight:600;color:#e24b4a;font-family:Share Tech Mono,monospace;">-${fmt(closedLostRisk)}</div></div>`:''}
+        </div>
+
+        <div style="margin-top:1rem;padding:1rem;background:#080e1a;border-radius:4px;border:1px solid #1e2d42;font-size:12px;color:#c8d6e5;line-height:1.8;font-family:'Share Tech Mono',monospace;">
+          <div style="color:#027DAD;margin-bottom:6px;letter-spacing:1px;">// QUICK REFERENCE</div>
+          <div>💬 <strong>To reassign a token</strong> → contact the admin (window must be open)</div>
+          <div>💱 <strong>To trade a token</strong> → negotiate a price with another SE, then contact admin to execute</div>
+          <div>🔥 <strong>Burned tokens</strong> → deal has closed, token is frozen forever</div>
+          <div>💀 <strong>Open deals at quarter end</strong> → auto-closed lost, value deducted from bank</div>
+          <div>❓ <strong>Questions?</strong> → hit the Help button in the top right</div>
+        </div>
+        ${winStatus}
+      </div>`;
   }
 }
 
@@ -963,11 +1015,63 @@ function renderAdjLog(){
 
 // ─── TOKEN MARKET ─────────────────────────────────────────────────────────────
 function renderTradeTab(){
+  const isAdmin=currentRole==='admin';
   ['trade-seller','trade-buyer'].forEach(id=>{
     document.getElementById(id).innerHTML=state.ses.map(se=>`<option value="${se.id}">${se.name}</option>`).join('');
   });
   document.getElementById('trade-buyer').selectedIndex=1;
   populateSellerTokens();renderTradeLog();
+
+  // show viewer guidance panel
+  const existing=document.getElementById('viewer-trade-guide');
+  if(existing)existing.remove();
+  if(!isAdmin){
+    const guide=document.createElement('div');
+    guide.id='viewer-trade-guide';
+    guide.innerHTML=`
+      <div class="info-box" style="margin-bottom:1rem;">
+        💱 <strong>How the Token Market works:</strong><br>
+        <span style="color:#c8d6e5;">
+        Negotiate a price directly with another SE — there are no fixed token prices, it's a free market.
+        Once you agree on a price, <strong>contact the admin</strong> to log the trade.
+        The agreed amount is deducted from the buyer's bank and credited to the seller's bank instantly.
+        </span>
+      </div>
+      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:10px;margin-bottom:1rem;">
+        <div class="card" style="padding:0.85rem;">
+          <div style="font-size:10px;color:#4a6280;font-family:Share Tech Mono,monospace;margin-bottom:6px;letter-spacing:1px;">THINGS TO KNOW</div>
+          <div style="font-size:12px;color:#c8d6e5;line-height:1.8;">
+            ✅ Any token can be sold at any time<br>
+            🔥 Burned tokens cannot be sold<br>
+            💰 Buyer's bank cannot go negative<br>
+            📋 All trades are logged below
+          </div>
+        </div>
+        <div class="card" style="padding:0.85rem;">
+          <div style="font-size:10px;color:#4a6280;font-family:Share Tech Mono,monospace;margin-bottom:6px;letter-spacing:1px;">TOKEN VALUES (REFERENCE)</div>
+          <div style="font-size:11px;color:#c8d6e5;line-height:1.8;font-family:Share Tech Mono,monospace;">
+            T10 = 10x multiplier<br>
+            T9 = 9x · T8 = 8x · T7 = 7x<br>
+            T6 = 6x · T5 = 5x · T4 = 4x<br>
+            T3 = 3x · T2 = 2x · T1 = 1x
+          </div>
+        </div>
+        <div class="card" style="padding:0.85rem;">
+          <div style="font-size:10px;color:#4a6280;font-family:Share Tech Mono,monospace;margin-bottom:6px;letter-spacing:1px;">HOW TO TRADE</div>
+          <div style="font-size:12px;color:#c8d6e5;line-height:1.8;">
+            1. Agree on a price with the other SE<br>
+            2. Contact the admin with:<br>
+            &nbsp;&nbsp;· Seller name<br>
+            &nbsp;&nbsp;· Buyer name<br>
+            &nbsp;&nbsp;· Token number<br>
+            &nbsp;&nbsp;· Agreed price
+          </div>
+        </div>
+      </div>`;
+    const tradesSection=document.getElementById('tab-trades');
+    const tradeLogCard=tradesSection.querySelector('.card:last-child');
+    tradesSection.insertBefore(guide,tradeLogCard);
+  }
 }
 
 function populateSellerTokens(){
