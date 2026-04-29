@@ -814,7 +814,7 @@ function renderTokenTab(){
     // update reassign button state
     const rb=document.getElementById('reassign-btn');
     if(rb){
-      rb.className='btn btn-warn'+(windowOpen?'':' btn-disabled');
+      rb.className='btn btn-warn'+((!windowOpen&&!isAdmin)?' btn-disabled':'');
     }
     document.getElementById('assign-se').innerHTML=state.ses.map(se=>`<option value="${se.id}">${se.name}</option>`).join('');
     document.getElementById('adj-se').innerHTML=state.ses.map(se=>`<option value="${se.id}">${se.name}</option>`).join('');
@@ -912,7 +912,12 @@ async function assignToken(){
 }
 
 async function midQuarterReassign(){
-  if(!isReassignWindowOpen()){alert('Reassignment window is currently closed.\nWindows: June 1–5 and July 1–5.');return;}
+  const windowOpen=isReassignWindowOpen();
+  const isAdmin=currentRole==='admin';
+  if(!windowOpen&&!isAdmin){alert('Reassignment window is currently closed.\nWindows: June 1–5 and July 1–5.');return;}
+  if(!windowOpen&&isAdmin){
+    if(!confirm('⚠️ Admin override: The reassignment window is currently closed.\nYou can still proceed as admin. Continue?'))return;
+  }
   const seId=parseInt(document.getElementById('assign-se').value);
   const tokenNum=parseInt(document.getElementById('assign-token').value);
   const se=state.ses.find(s=>s.id===seId);if(!se)return;
