@@ -6,3 +6,12 @@ pages_build_output_dir = "./public"
 binding = "DB"
 database_name = "spiff-tracker"
 database_id = "bd10b325-a027-48da-91c1-34f411c4d1ab"
+
+[triggers]
+crons = [
+  "0 9 1 6 *",
+  "0 9 6 6 *",
+  "0 9 1 7 *",
+  "0 9 6 7 *",
+  "0 14 * * 1"
+]
