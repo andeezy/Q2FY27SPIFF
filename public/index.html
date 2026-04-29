@@ -93,18 +93,18 @@ select option{background:#0d1524;}
 .info-box{background:#027DAD10;border:1px solid #027DAD30;border-radius:4px;padding:10px 14px;font-size:11px;color:#027DAD;margin-bottom:1rem;font-family:'Share Tech Mono',monospace;line-height:1.7;}
 .success-box{background:#5DCAA510;border:1px solid #5DCAA530;border-radius:4px;padding:10px 14px;font-size:11px;color:#5DCAA5;margin-bottom:1rem;font-family:'Share Tech Mono',monospace;line-height:1.7;}
 /* WINDOW BANNER */
-.window-banner{border-radius:8px;padding:1.25rem 1.5rem;margin-bottom:1.25rem;display:flex;align-items:center;gap:16px;flex-wrap:wrap;}
-.window-banner.open{background:linear-gradient(135deg,#5DCAA515,#027DAD15);border:1.5px solid #5DCAA544;}
-.window-banner.closed{background:linear-gradient(135deg,#e24b4a10,#0a0e17);border:1.5px solid #e24b4a33;}
-.window-banner.upcoming{background:linear-gradient(135deg,#EF9F2710,#0a0e17);border:1.5px solid #EF9F2744;}
-.window-status{font-size:22px;font-weight:700;font-family:'Share Tech Mono',monospace;letter-spacing:2px;}
+.window-banner{border-radius:6px;padding:8px 14px;margin-bottom:1.25rem;display:flex;align-items:center;gap:12px;flex-wrap:wrap;}
+.window-banner.open{background:linear-gradient(135deg,#5DCAA515,#027DAD15);border:1px solid #5DCAA544;}
+.window-banner.closed{background:linear-gradient(135deg,#e24b4a10,#0a0e17);border:1px solid #e24b4a33;}
+.window-banner.upcoming{background:linear-gradient(135deg,#EF9F2710,#0a0e17);border:1px solid #EF9F2744;}
+.window-status{font-size:12px;font-weight:600;font-family:'Share Tech Mono',monospace;letter-spacing:1px;}
 .window-status.open{color:#5DCAA5;}
 .window-status.closed{color:#e24b4a;}
 .window-status.upcoming{color:#EF9F27;}
-.window-detail{font-size:12px;font-family:'Share Tech Mono',monospace;color:#c8d6e5;line-height:1.7;}
-.countdown-block{margin-left:auto;text-align:right;}
+.window-detail{font-size:11px;font-family:'Share Tech Mono',monospace;color:#4a6280;line-height:1.4;}
+.countdown-block{margin-left:auto;display:flex;align-items:center;gap:8px;}
 .countdown-label{font-size:10px;color:#4a6280;font-family:'Share Tech Mono',monospace;letter-spacing:1px;text-transform:uppercase;}
-.countdown-time{font-size:24px;font-weight:600;font-family:'Share Tech Mono',monospace;color:#027DAD;}
+.countdown-time{font-size:13px;font-weight:600;font-family:'Share Tech Mono',monospace;color:#027DAD;}
 /* HELP MODAL */
 .modal-overlay{position:fixed;top:0;left:0;right:0;bottom:0;background:#000000cc;z-index:1000;display:flex;align-items:flex-start;justify-content:center;padding:2rem;overflow-y:auto;}
 .modal-box{background:#0d1524;border:1px solid #1e2d42;border-radius:8px;padding:2rem;width:100%;max-width:700px;position:relative;margin:auto;}
@@ -116,8 +116,8 @@ select option{background:#0d1524;}
 .help-text{font-size:13px;color:#c8d6e5;line-height:1.7;}
 .help-text li{margin-left:1.2rem;margin-bottom:4px;}
 /* TOOLTIP */
-.tip{display:inline-flex;align-items:center;justify-content:center;width:14px;height:14px;border-radius:50%;background:#027DAD22;color:#027DAD;font-size:9px;font-family:'Share Tech Mono',monospace;cursor:help;border:1px solid #027DAD44;flex-shrink:0;position:relative;}
-.tip:hover::after{content:attr(data-tip);position:absolute;bottom:calc(100% + 6px);left:50%;transform:translateX(-50%);background:#0d1524;border:1px solid #1e2d42;border-radius:4px;padding:6px 10px;font-size:11px;color:#c8d6e5;white-space:nowrap;z-index:100;max-width:280px;white-space:normal;text-align:left;line-height:1.5;font-family:'Rajdhani',sans-serif;width:max-content;}
+.tip{display:inline-flex;align-items:center;justify-content:center;width:14px;height:14px;border-radius:50%;background:#027DAD22;color:#027DAD;font-size:9px;font-family:'Share Tech Mono',monospace;cursor:help;border:1px solid #027DAD44;flex-shrink:0;position:relative;vertical-align:middle;}
+.tip:hover::after{content:attr(data-tip);position:fixed;background:#0d1524;border:1px solid #027DAD44;border-radius:4px;padding:8px 12px;font-size:12px;color:#c8d6e5;z-index:9999;max-width:260px;white-space:normal;text-align:left;line-height:1.6;font-family:'Rajdhani',sans-serif;pointer-events:none;margin-top:4px;box-shadow:0 4px 20px #00000088;}
 /* MISC */
 .scroll-x{overflow-x:auto;}
 .se-name{font-weight:600;color:#e8f4f8;}
@@ -446,34 +446,27 @@ function renderWindowBanner(){
   if(ws.status==='open'){
     const remaining=ws.window.end-now;
     html=`<div class="window-banner open">
-      <div>
-        <div class="window-status open">🟢 REASSIGNMENT WINDOW OPEN</div>
-        <div class="window-detail">${ws.window.label} · Closes ${ws.window.end.toLocaleDateString('en-US',{month:'short',day:'numeric'})} at midnight<br>
-        Cost: $100,000 per reassignment · Max 2 per token · Burned tokens cannot be reassigned</div>
-      </div>
+      <div class="window-status open">🟢 REASSIGNMENT WINDOW OPEN</div>
+      <div class="window-detail">Closes ${ws.window.end.toLocaleDateString('en-US',{month:'short',day:'numeric'})} · $100k/reassign · max 2/token</div>
       <div class="countdown-block">
-        <div class="countdown-label">Window closes in</div>
+        <div class="countdown-label">closes in</div>
         <div class="countdown-time" id="banner-countdown">${fmtCountdown(remaining)}</div>
       </div>
     </div>`;
   } else if(ws.status==='upcoming'){
     const until=ws.window.start-now;
     html=`<div class="window-banner upcoming">
-      <div>
-        <div class="window-status upcoming">🟡 NEXT WINDOW: ${ws.window.label}</div>
-        <div class="window-detail">Opens ${ws.window.start.toLocaleDateString('en-US',{month:'short',day:'numeric'})} · Reassignment locked until then</div>
-      </div>
+      <div class="window-status upcoming">🟡 ${ws.window.label.toUpperCase()}</div>
+      <div class="window-detail">Opens ${ws.window.start.toLocaleDateString('en-US',{month:'short',day:'numeric'})} · reassignment locked until then</div>
       <div class="countdown-block">
-        <div class="countdown-label">Window opens in</div>
+        <div class="countdown-label">opens in</div>
         <div class="countdown-time" id="banner-countdown">${fmtCountdown(until)}</div>
       </div>
     </div>`;
   } else {
     html=`<div class="window-banner closed">
-      <div>
-        <div class="window-status closed">🔴 REASSIGNMENT LOCKED</div>
-        <div class="window-detail">Both reassignment windows have passed. Token assignments are final.</div>
-      </div>
+      <div class="window-status closed">🔴 REASSIGNMENT LOCKED</div>
+      <div class="window-detail">Both reassignment windows have passed — token assignments are final</div>
     </div>`;
   }
   banner.innerHTML=html;
@@ -636,6 +629,9 @@ function applyRoleUI(){
   });
   const eq=document.getElementById('end-quarter-admin');
   if(eq)eq.style.display=isAdmin?'block':'none';
+  // clear viewer-only panel so it never shows in admin mode
+  const vv=document.getElementById('tokens-viewer-view');
+  if(vv&&isAdmin)vv.innerHTML='';
 }
 
 // ─── TIMERS ───────────────────────────────────────────────────────────────────
@@ -817,7 +813,8 @@ function renderTokenTab(){
     // update reassign button state
     const rb=document.getElementById('reassign-btn');
     if(rb){
-      rb.className='btn btn-warn'+((!windowOpen&&!isAdmin)?' btn-disabled':'');
+      // admin can always click reassign — window check happens inside the function
+      rb.className='btn btn-warn'+((!windowOpen&&currentRole!=='admin')?' btn-disabled':'');
     }
     document.getElementById('assign-se').innerHTML=state.ses.map(se=>`<option value="${se.id}">${se.name}</option>`).join('');
     document.getElementById('adj-se').innerHTML=state.ses.map(se=>`<option value="${se.id}">${se.name}</option>`).join('');
