@@ -8,6 +8,7 @@
 <style>
 *{box-sizing:border-box;margin:0;padding:0;}
 body{background:#0a0e17;min-height:100vh;font-family:'Rajdhani',sans-serif;color:#c8d6e5;}
+/* LOGIN */
 .login-screen{min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:2rem;}
 .login-box{background:#0d1524;border:1px solid #1e2d42;border-radius:8px;padding:2.5rem 2rem;width:100%;max-width:360px;}
 .login-logo{text-align:center;margin-bottom:1.5rem;}
@@ -24,41 +25,49 @@ body{background:#0a0e17;min-height:100vh;font-family:'Rajdhani',sans-serif;color
 .login-mode-btn{flex:1;padding:7px;border-radius:4px;border:1px solid #1e2d42;font-size:11px;font-weight:500;letter-spacing:1px;text-transform:uppercase;cursor:pointer;background:transparent;color:#4a6280;font-family:'Rajdhani',sans-serif;}
 .login-mode-btn.active{border-color:#027DAD55;color:#027DAD;background:#027DAD12;}
 .login-err{font-size:11px;color:#e24b4a;font-family:'Share Tech Mono',monospace;margin-top:8px;text-align:center;}
+/* APP SHELL */
 .app{padding:1.25rem;display:none;}
-.app-header{display:flex;align-items:center;gap:12px;margin-bottom:1.5rem;padding-bottom:1rem;border-bottom:1px solid #1e2d42;flex-wrap:wrap;}
+.app-header{display:flex;align-items:center;gap:12px;margin-bottom:1rem;padding-bottom:1rem;border-bottom:1px solid #1e2d42;flex-wrap:wrap;}
 .logo-mark{width:40px;height:40px;display:flex;align-items:center;justify-content:center;flex-shrink:0;}
 .header-titles{flex:1;}
 .app-title{font-size:19px;font-weight:600;color:#e8f4f8;letter-spacing:2px;text-transform:uppercase;}
 .app-sub{font-size:11px;color:#4a6280;font-family:'Share Tech Mono',monospace;letter-spacing:1px;margin-top:2px;}
-.header-right{margin-left:auto;display:flex;align-items:center;gap:10px;flex-wrap:wrap;}
+.header-right{margin-left:auto;display:flex;align-items:center;gap:8px;flex-wrap:wrap;}
 .quarter-badge{font-family:'Share Tech Mono',monospace;font-size:11px;color:#027DAD;border:1px solid #027DAD33;padding:4px 12px;border-radius:3px;letter-spacing:1px;}
 .role-badge{font-family:'Share Tech Mono',monospace;font-size:10px;padding:4px 10px;border-radius:3px;letter-spacing:1px;}
 .role-admin{color:#EF9F27;border:1px solid #EF9F2744;background:#EF9F2712;}
 .role-viewer{color:#5DCAA5;border:1px solid #5DCAA544;background:#5DCAA512;}
 .logout-btn{font-family:'Share Tech Mono',monospace;font-size:10px;color:#4a6280;border:1px solid #1e2d42;padding:4px 10px;border-radius:3px;cursor:pointer;background:transparent;letter-spacing:1px;}
 .logout-btn:hover{color:#e24b4a;border-color:#e24b4a44;}
+.help-btn{font-family:'Share Tech Mono',monospace;font-size:10px;color:#027DAD;border:1px solid #027DAD44;padding:4px 10px;border-radius:3px;cursor:pointer;background:#027DAD12;letter-spacing:1px;}
+.help-btn:hover{background:#027DAD22;}
+/* TABS */
 .tabs{display:flex;gap:4px;margin-bottom:1.25rem;border-bottom:1px solid #1e2d42;flex-wrap:wrap;}
 .tab{padding:8px 16px;font-size:12px;font-weight:500;letter-spacing:1px;text-transform:uppercase;cursor:pointer;background:transparent;border:none;color:#4a6280;border-bottom:2px solid transparent;margin-bottom:-1px;font-family:'Rajdhani',sans-serif;}
 .tab.active{color:#027DAD;border-bottom-color:#027DAD;}
 .tab:hover{color:#c8d6e5;}
 .section{display:none;}
 .section.active{display:block;}
+/* CARDS & METRICS */
 .metric-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:10px;margin-bottom:1.25rem;}
 .metric{background:#0d1524;border:1px solid #1e2d42;border-radius:4px;padding:1rem;}
 .metric-label{font-size:10px;color:#4a6280;letter-spacing:1.5px;text-transform:uppercase;font-family:'Share Tech Mono',monospace;margin-bottom:6px;}
 .metric-value{font-size:20px;font-weight:600;color:#027DAD;font-family:'Share Tech Mono',monospace;}
 .card{background:#0d1524;border:1px solid #1e2d42;border-radius:6px;padding:1.1rem 1.25rem;margin-bottom:1rem;}
 .card-title{font-size:10px;font-weight:500;letter-spacing:2px;text-transform:uppercase;color:#4a6280;font-family:'Share Tech Mono',monospace;margin-bottom:1rem;padding-bottom:8px;border-bottom:1px solid #1e2d42;}
+/* TABLE */
 table{width:100%;border-collapse:collapse;font-size:13px;}
 th{text-align:left;font-size:10px;font-weight:500;color:#4a6280;letter-spacing:1.5px;text-transform:uppercase;font-family:'Share Tech Mono',monospace;padding:7px 8px;border-bottom:1px solid #1e2d42;}
 td{padding:8px 8px;border-bottom:1px solid #0f1a2a;color:#c8d6e5;vertical-align:middle;}
 tr:last-child td{border-bottom:none;}
 tr:hover td{background:#111d2e;}
-input[type="text"],input[type="number"],select{width:100%;font-size:13px;background:#080e1a;color:#c8d6e5;border:1px solid #1e2d42;border-radius:4px;padding:7px 10px;font-family:'Rajdhani',sans-serif;outline:none;}
+/* FORMS */
+input[type="text"],input[type="number"],input[type="email"],select{width:100%;font-size:13px;background:#080e1a;color:#c8d6e5;border:1px solid #1e2d42;border-radius:4px;padding:7px 10px;font-family:'Rajdhani',sans-serif;outline:none;}
 input:focus,select:focus{border-color:#027DAD44;}
 select option{background:#0d1524;}
 .form-row{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:10px;margin-bottom:12px;align-items:end;}
-.form-label{font-size:10px;color:#4a6280;letter-spacing:1.5px;text-transform:uppercase;font-family:'Share Tech Mono',monospace;margin-bottom:5px;}
+.form-label{font-size:10px;color:#4a6280;letter-spacing:1.5px;text-transform:uppercase;font-family:'Share Tech Mono',monospace;margin-bottom:5px;display:flex;align-items:center;gap:5px;}
+/* BUTTONS */
 .btn{padding:7px 16px;border-radius:4px;border:1px solid #1e2d42;font-size:11px;font-weight:500;letter-spacing:1px;text-transform:uppercase;cursor:pointer;background:transparent;color:#c8d6e5;font-family:'Rajdhani',sans-serif;}
 .btn-primary{background:#027DAD18;color:#027DAD;border-color:#027DAD44;}
 .btn-primary:hover{background:#027DAD28;}
@@ -66,35 +75,68 @@ select option{background:#0d1524;}
 .btn-danger:hover{background:#e24b4a28;}
 .btn-warn{background:#EF9F2718;color:#EF9F27;border-color:#EF9F2744;}
 .btn-warn:hover{background:#EF9F2728;}
+.btn-disabled{opacity:0.35;cursor:not-allowed;pointer-events:none;}
+/* BADGES */
 .badge-1{display:inline-block;font-size:10px;padding:2px 9px;border-radius:3px;background:#EF9F2722;color:#EF9F27;border:1px solid #EF9F2744;font-family:'Share Tech Mono',monospace;letter-spacing:1px;}
 .badge-2{display:inline-block;font-size:10px;padding:2px 9px;border-radius:3px;background:#85B7EB22;color:#85B7EB;border:1px solid #85B7EB44;font-family:'Share Tech Mono',monospace;letter-spacing:1px;}
 .badge-3{display:inline-block;font-size:10px;padding:2px 9px;border-radius:3px;background:#5DCAA522;color:#5DCAA5;border:1px solid #5DCAA544;font-family:'Share Tech Mono',monospace;letter-spacing:1px;}
 .pos{color:#5DCAA5;font-family:'Share Tech Mono',monospace;}
 .neg{color:#e24b4a;font-family:'Share Tech Mono',monospace;}
 .mono{font-family:'Share Tech Mono',monospace;font-size:12px;}
-.token-pill{display:inline-flex;align-items:center;gap:3px;font-size:10px;padding:2px 8px;border-radius:3px;background:#0a1220;border:1px solid #1e2d42;margin:2px;color:#4a6280;font-family:'Share Tech Mono',monospace;}
+/* TOKEN PILLS */
+.token-pill{display:inline-flex;align-items:center;gap:4px;font-size:10px;padding:3px 8px;border-radius:3px;background:#0a1220;border:1px solid #1e2d42;margin:2px;color:#4a6280;font-family:'Share Tech Mono',monospace;cursor:default;position:relative;}
 .token-pill.on{background:#027DAD14;color:#027DAD;border-color:#027DAD33;}
+.token-pill.burned{background:#e24b4a12;color:#e24b4a88;border-color:#e24b4a33;text-decoration:line-through;}
+.token-pill.maxed{border-color:#EF9F2744;}
+/* BOXES */
 .warn-box{background:#EF9F2710;border:1px solid #EF9F2730;border-radius:4px;padding:10px 14px;font-size:11px;color:#EF9F27;margin-bottom:1rem;font-family:'Share Tech Mono',monospace;line-height:1.7;}
+.info-box{background:#027DAD10;border:1px solid #027DAD30;border-radius:4px;padding:10px 14px;font-size:11px;color:#027DAD;margin-bottom:1rem;font-family:'Share Tech Mono',monospace;line-height:1.7;}
+.success-box{background:#5DCAA510;border:1px solid #5DCAA530;border-radius:4px;padding:10px 14px;font-size:11px;color:#5DCAA5;margin-bottom:1rem;font-family:'Share Tech Mono',monospace;line-height:1.7;}
+/* WINDOW BANNER */
+.window-banner{border-radius:8px;padding:1.25rem 1.5rem;margin-bottom:1.25rem;display:flex;align-items:center;gap:16px;flex-wrap:wrap;}
+.window-banner.open{background:linear-gradient(135deg,#5DCAA515,#027DAD15);border:1.5px solid #5DCAA544;}
+.window-banner.closed{background:linear-gradient(135deg,#e24b4a10,#0a0e17);border:1.5px solid #e24b4a33;}
+.window-banner.upcoming{background:linear-gradient(135deg,#EF9F2710,#0a0e17);border:1.5px solid #EF9F2744;}
+.window-status{font-size:22px;font-weight:700;font-family:'Share Tech Mono',monospace;letter-spacing:2px;}
+.window-status.open{color:#5DCAA5;}
+.window-status.closed{color:#e24b4a;}
+.window-status.upcoming{color:#EF9F27;}
+.window-detail{font-size:12px;font-family:'Share Tech Mono',monospace;color:#c8d6e5;line-height:1.7;}
+.countdown-block{margin-left:auto;text-align:right;}
+.countdown-label{font-size:10px;color:#4a6280;font-family:'Share Tech Mono',monospace;letter-spacing:1px;text-transform:uppercase;}
+.countdown-time{font-size:24px;font-weight:600;font-family:'Share Tech Mono',monospace;color:#027DAD;}
+/* HELP MODAL */
+.modal-overlay{position:fixed;top:0;left:0;right:0;bottom:0;background:#000000cc;z-index:1000;display:flex;align-items:flex-start;justify-content:center;padding:2rem;overflow-y:auto;}
+.modal-box{background:#0d1524;border:1px solid #1e2d42;border-radius:8px;padding:2rem;width:100%;max-width:700px;position:relative;margin:auto;}
+.modal-close{position:absolute;top:1rem;right:1rem;background:transparent;border:1px solid #1e2d42;color:#4a6280;font-size:16px;cursor:pointer;border-radius:4px;padding:2px 8px;font-family:'Share Tech Mono',monospace;}
+.modal-close:hover{color:#e24b4a;border-color:#e24b4a44;}
+.modal-title{font-size:16px;font-weight:600;color:#e8f4f8;letter-spacing:2px;text-transform:uppercase;margin-bottom:1.5rem;padding-bottom:1rem;border-bottom:1px solid #1e2d42;}
+.help-section{margin-bottom:1.5rem;}
+.help-section-title{font-size:11px;font-weight:600;color:#027DAD;letter-spacing:2px;text-transform:uppercase;font-family:'Share Tech Mono',monospace;margin-bottom:8px;}
+.help-text{font-size:13px;color:#c8d6e5;line-height:1.7;}
+.help-text li{margin-left:1.2rem;margin-bottom:4px;}
+/* TOOLTIP */
+.tip{display:inline-flex;align-items:center;justify-content:center;width:14px;height:14px;border-radius:50%;background:#027DAD22;color:#027DAD;font-size:9px;font-family:'Share Tech Mono',monospace;cursor:help;border:1px solid #027DAD44;flex-shrink:0;position:relative;}
+.tip:hover::after{content:attr(data-tip);position:absolute;bottom:calc(100% + 6px);left:50%;transform:translateX(-50%);background:#0d1524;border:1px solid #1e2d42;border-radius:4px;padding:6px 10px;font-size:11px;color:#c8d6e5;white-space:nowrap;z-index:100;max-width:280px;white-space:normal;text-align:left;line-height:1.5;font-family:'Rajdhani',sans-serif;width:max-content;}
+/* MISC */
 .scroll-x{overflow-x:auto;}
 .se-name{font-weight:600;color:#e8f4f8;}
 .rank-num{font-family:'Share Tech Mono',monospace;font-size:12px;color:#4a6280;}
-.audit-action{font-size:11px;color:#c8d6e5;}
 .audit-time{font-size:10px;color:#4a6280;font-family:'Share Tech Mono',monospace;}
-.undo-btn{font-size:10px;padding:2px 8px;border-radius:3px;border:1px solid #e24b4a44;color:#e24b4a;background:transparent;cursor:pointer;font-family:'Share Tech Mono',monospace;letter-spacing:1px;}
-.undo-btn:hover{background:#e24b4a18;}
-.undo-btn:disabled{opacity:0.3;cursor:default;}
 .save-indicator{font-size:10px;font-family:'Share Tech Mono',monospace;color:#4a6280;}
 .save-indicator.ok{color:#5DCAA5;}
 .save-indicator.err{color:#e24b4a;}
+.burned-label{font-size:9px;color:#e24b4a;font-family:'Share Tech Mono',monospace;border:1px solid #e24b4a44;padding:1px 5px;border-radius:3px;margin-left:4px;}
 </style>
 </head>
 <body>
 
+<!-- LOGIN -->
 <div id="login-screen" class="login-screen">
   <div class="login-box">
     <div class="login-logo">
       <div class="login-logo-mark">
-        <img src="/Verkada-Icon-Logo-White-RGB.png" width="100" height="100" style="display:block;" alt="Verkada"/>
+        <img src="/Verkada-Icon-Logo-White-RGB.png" width="52" height="52" style="display:block;" alt="Verkada"/>
       </div>
       <div class="login-title">ATX+PHX MMSE SPIFF</div>
       <div class="login-sub">Q2 FY27</div>
@@ -104,81 +146,153 @@ select option{background:#0d1524;}
       <button class="login-mode-btn" id="mode-viewer" onclick="setLoginMode('viewer')">View only</button>
     </div>
     <div id="admin-fields">
-      <div class="login-field">
-        <label class="login-label">Password</label>
-        <input type="password" id="login-pass" class="login-input" placeholder="Enter admin password" onkeydown="if(event.key==='Enter')doLogin()"/>
-      </div>
+      <div class="login-field"><label class="login-label">Password</label><input type="password" id="login-pass" class="login-input" placeholder="Enter admin password" onkeydown="if(event.key==='Enter')doLogin()"/></div>
     </div>
     <div id="viewer-fields" style="display:none">
-      <div class="login-field">
-        <label class="login-label">Your name</label>
-        <select id="viewer-name" class="login-input"></select>
-      </div>
-      <div class="login-field">
-        <label class="login-label">Viewer password</label>
-        <input type="password" id="viewer-pass" class="login-input" placeholder="Enter viewer password" onkeydown="if(event.key==='Enter')doLogin()"/>
-      </div>
+      <div class="login-field"><label class="login-label">Your name</label><select id="viewer-name" class="login-input"></select></div>
+      <div class="login-field"><label class="login-label">Viewer password</label><input type="password" id="viewer-pass" class="login-input" placeholder="Enter viewer password" onkeydown="if(event.key==='Enter')doLogin()"/></div>
     </div>
     <button class="login-btn" onclick="doLogin()">Access dashboard</button>
     <div id="login-err" class="login-err"></div>
   </div>
 </div>
 
+<!-- HELP MODAL -->
+<div id="help-modal" class="modal-overlay" style="display:none" onclick="if(event.target===this)closeHelp()">
+  <div class="modal-box">
+    <button class="modal-close" onclick="closeHelp()">✕</button>
+    <div class="modal-title">📖 SPIFF Rules &amp; Guide</div>
+    <div class="help-section">
+      <div class="help-section-title">The Objective</div>
+      <div class="help-text">Maximize your bank balance by the end of Q2 FY27. Your bank starts at $100,000. Revenue from closed won deals (multiplied by your token weight) is added to your bank. Deals that close lost subtract their raw value. The SE with the highest bank at quarter end wins.</div>
+    </div>
+    <div class="help-section">
+      <div class="help-section-title">Tokens</div>
+      <div class="help-text"><ul>
+        <li>Each SE starts with <strong>10 tokens</strong> numbered 1–10.</li>
+        <li>Token number = multiplier. <strong>Token 10 = 10x</strong>, Token 9 = 9x, down to Token 1 = 1x.</li>
+        <li>Assign each token to one opportunity. Only one token per opportunity.</li>
+        <li>When a deal closes won, your bank earns: <strong>deal value × token multiplier</strong>.</li>
+        <li>When a deal closes lost, your bank loses the raw deal value (no multiplier).</li>
+        <li>Any open deal at quarter end is automatically marked closed lost.</li>
+        <li>Tokens assigned to closed won or closed lost deals are <strong>burned</strong> — they cannot be reassigned or sold.</li>
+      </ul></div>
+    </div>
+    <div class="help-section">
+      <div class="help-section-title">Reassignment Windows</div>
+      <div class="help-text"><ul>
+        <li>You may reassign a token to a different opportunity <strong>twice per quarter</strong>.</li>
+        <li>Reassignments cost <strong>$100,000 each</strong> and are only allowed during two windows:</li>
+        <li><strong>Window 1:</strong> June 1–5 (start of Month 2)</li>
+        <li><strong>Window 2:</strong> July 1–5 (start of Month 3)</li>
+        <li>Outside these windows, token assignments are locked.</li>
+        <li>Burned tokens (on closed deals) cannot be reassigned even during a window.</li>
+      </ul></div>
+    </div>
+    <div class="help-section">
+      <div class="help-section-title">Token Market</div>
+      <div class="help-text"><ul>
+        <li>SEs can negotiate token trades with each other at any agreed price.</li>
+        <li>Contact the Admin to execute a trade — you agree on a price, the admin logs it.</li>
+        <li>The buyer's bank is charged the agreed price; the seller's bank is credited.</li>
+        <li>Banks cannot go negative. If you can't afford it, the trade is blocked.</li>
+        <li>Burned tokens cannot be sold.</li>
+        <li>All trades are logged and visible to everyone.</li>
+      </ul></div>
+    </div>
+    <div class="help-section">
+      <div class="help-section-title">Bank Balance</div>
+      <div class="help-text"><ul>
+        <li>Starts at <strong>$100,000</strong>.</li>
+        <li>Increases with: closed won game revenue, token sale proceeds.</li>
+        <li>Decreases with: closed lost raw value, reassignment fees, token purchases.</li>
+        <li>Bank can never go below $0.</li>
+        <li>Final ranking is determined by bank balance at quarter end.</li>
+      </ul></div>
+    </div>
+    <div class="help-section">
+      <div class="help-section-title">End of Quarter</div>
+      <div class="help-text">When the admin closes the quarter, all open opportunities with tokens assigned are automatically moved to Closed Lost, and their deal values are deducted from the respective SE's bank. Plan accordingly — don't leave risky opps open!</div>
+    </div>
+  </div>
+</div>
+
+<!-- MAIN APP -->
 <div id="main-app" class="app">
   <div class="app-header">
-    <div class="logo-mark">
-      <img src="/Verkada-Icon-Logo-White-RGB.png" width="60" height="60" style="display:block;" alt="Verkada"/>
-    </div>
+    <div class="logo-mark"><img src="/Verkada-Icon-Logo-White-RGB.png" width="40" height="40" style="display:block;" alt="Verkada"/></div>
     <div class="header-titles">
       <div class="app-title">ATX+PHX MMSE SPIFF</div>
       <div class="app-sub">Q2 FY27</div>
     </div>
     <div class="header-right">
       <span id="save-indicator" class="save-indicator"></span>
+      <button class="help-btn" onclick="openHelp()">? Help</button>
       <span class="quarter-badge">Q2 FY27</span>
       <span id="role-badge" class="role-badge role-admin">ADMIN</span>
       <button class="logout-btn" onclick="doLogout()">logout</button>
     </div>
   </div>
 
+  <!-- REASSIGNMENT WINDOW BANNER -->
+  <div id="window-banner"></div>
+
   <div class="tabs">
     <button class="tab active" onclick="showTab('leaderboard',this)">Leaderboard</button>
     <button class="tab" onclick="showTab('opps',this)">Opportunities</button>
     <button class="tab" onclick="showTab('tokens',this)">Token Assignments</button>
-    <button class="tab" id="tab-trades-btn" onclick="showTab('trades',this)">Token Market</button>
+    <button class="tab" onclick="showTab('trades',this)">Token Market</button>
   </div>
 
+  <!-- LEADERBOARD -->
   <div id="tab-leaderboard" class="section active">
     <div class="metric-grid" id="summary-metrics"></div>
     <div class="card">
-      <div class="card-title">Live standings — bank = $25k start + closed won revenue − closed lost value</div>
+      <div class="card-title">
+        Live standings
+        <span class="tip" data-tip="Bank = $100k start + (closed won deal value × token multiplier) − closed lost deal value. Open deals don't affect bank yet.">?</span>
+      </div>
       <div class="scroll-x">
         <table id="leaderboard-table">
           <thead><tr>
             <th>Rank</th><th>SE</th><th>Tokens used</th><th>Avail</th>
-            <th>Proj. revenue (open)</th><th>Closed won</th><th>Risk (lost)</th><th>Bank balance</th>
+            <th>Proj. revenue (open) <span class="tip" data-tip="Open deals × token multiplier. Not yet in bank.">?</span></th>
+            <th>Real revenue <span class="tip" data-tip="Actual dollar value of closed won deals (no multiplier).">?</span></th>
+            <th>Game revenue <span class="tip" data-tip="Closed won deal value × token multiplier. This is what counts toward your bank.">?</span></th>
+            <th>Risk (lost)</th>
+            <th>Bank balance</th>
           </tr></thead>
           <tbody></tbody>
         </table>
       </div>
     </div>
+    <!-- COUNTDOWN STRIP -->
+    <div class="card" id="timeline-card"></div>
+    <!-- ADMIN: END QUARTER -->
+    <div id="end-quarter-admin" style="display:none">
+      <div class="card" style="border-color:#e24b4a33;">
+        <div class="card-title" style="color:#e24b4a;">Admin: End of Quarter</div>
+        <div class="warn-box">This will mark ALL open opportunities that have tokens assigned as Closed Lost and deduct their values from each SE's bank. This cannot be undone. Only do this at the true end of Q2.</div>
+        <button class="btn btn-danger" onclick="endQuarter()">Close Quarter &amp; Settle All Open Opps</button>
+      </div>
+    </div>
   </div>
 
+  <!-- OPPORTUNITIES -->
   <div id="tab-opps" class="section">
     <div id="opps-admin-controls">
       <div class="card">
         <div class="card-title">Bulk upload via CSV</div>
         <div style="font-size:11px;color:#4a6280;font-family:'Share Tech Mono',monospace;margin-bottom:12px;line-height:1.8;">
           Expected columns: <span style="color:#027DAD">opp_name, value, stage, sf_url, se_name, token_num</span><br>
-          stage = open / closed_won / closed_lost (defaults to open)<br>
-          sf_url, se_name + token_num are optional — leave blank if not needed
+          stage = open / closed_won / closed_lost &nbsp;·&nbsp; sf_url, se_name, token_num are optional
         </div>
         <div style="display:flex;align-items:center;gap:12px;flex-wrap:wrap;">
           <input type="file" id="csv-file" accept=".csv" style="font-size:12px;color:#c8d6e5;background:#080e1a;border:1px solid #1e2d42;border-radius:4px;padding:6px 10px;flex:1;min-width:200px;"/>
           <button class="btn btn-primary" onclick="uploadCSV()">Upload CSV</button>
-          <button class="btn" onclick="downloadTemplate()" style="font-size:11px;">Download template</button>
+          <button class="btn" onclick="downloadTemplate()">Download template</button>
         </div>
-        <div id="csv-result" style="margin-top:10px;font-size:11px;font-family:'Share Tech Mono',monospace;"></div>
+        <div id="csv-result" style="margin-top:10px;font-size:11px;font-family:'Share Tech Mono',monospace;white-space:pre-line;"></div>
       </div>
       <div class="card">
         <div class="card-title">Add opportunity</div>
@@ -187,11 +301,7 @@ select option{background:#0d1524;}
           <div><div class="form-label">Estimated value ($)</div><input type="number" id="opp-value" placeholder="50000"/></div>
           <div><div class="form-label">Salesforce URL</div><input type="text" id="opp-sf" placeholder="https://verkada.lightning.force.com/..."/></div>
           <div><div class="form-label">Stage</div>
-            <select id="opp-stage">
-              <option value="open">Open</option>
-              <option value="closed_won">Closed won</option>
-              <option value="closed_lost">Closed lost</option>
-            </select>
+            <select id="opp-stage"><option value="open">Open</option><option value="closed_won">Closed won</option><option value="closed_lost">Closed lost</option></select>
           </div>
           <div style="display:flex;align-items:flex-end;"><button class="btn btn-primary" onclick="addOpp()">+ Add opp</button></div>
         </div>
@@ -208,50 +318,57 @@ select option{background:#0d1524;}
     </div>
   </div>
 
+  <!-- TOKEN ASSIGNMENTS -->
   <div id="tab-tokens" class="section">
     <div id="tokens-admin-controls">
-      <div class="warn-box">Each SE has 10 tokens. Token 1=10x ($100k) · Token 2=9x ($90k) · ... · Token 10=1x ($10k). Only one token may be placed per opportunity. Mid-quarter reassignment costs $50,000.</div>
+      <div class="warn-box" id="tokens-warn-box">Loading window status...</div>
       <div class="card">
-        <div class="card-title">Assign token</div>
+        <div class="card-title">
+          Assign token
+          <span class="tip" data-tip="Select an SE, pick a token, then pick the opportunity to assign it to. Only one token per opp. Burned tokens cannot be reassigned.">?</span>
+        </div>
         <div class="form-row">
           <div><div class="form-label">SE</div><select id="assign-se" onchange="renderTokensForSE()"></select></div>
-          <div><div class="form-label">Token #</div><select id="assign-token" onchange="refreshOppDropdown()"></select></div>
+          <div><div class="form-label">Token # <span class="tip" data-tip="Token number = multiplier. Token 10 = 10x your deal value.">?</span></div><select id="assign-token" onchange="refreshOppDropdown()"></select></div>
           <div><div class="form-label">Opportunity</div><select id="assign-opp"><option value="">-- unassign --</option></select></div>
           <div style="display:flex;align-items:flex-end;gap:8px;">
-            <button class="btn btn-primary" onclick="assignToken()">Assign</button>
-            <button class="btn btn-warn" onclick="midQuarterReassign()">Mid-Q (-$50k)</button>
+            <button class="btn btn-primary" id="assign-btn" onclick="assignToken()">Assign</button>
+            <button class="btn btn-warn" id="reassign-btn" onclick="midQuarterReassign()">Reassign (-$100k) <span class="tip" data-tip="Costs $100,000. Max 2 reassignments per token per quarter. Only available during June 1-5 and July 1-5.">?</span></button>
           </div>
         </div>
         <div id="se-token-view"></div>
       </div>
       <div class="card">
-        <div class="card-title">Manual bank adjustment</div>
+        <div class="card-title">
+          Manual bank adjustment
+          <span class="tip" data-tip="Use this to correct errors. All adjustments are logged. Banks cannot go negative.">?</span>
+        </div>
         <div class="form-row">
           <div><div class="form-label">SE</div><select id="adj-se"></select></div>
-          <div><div class="form-label">Amount ($) — use negative to deduct</div><input type="number" id="adj-amount" placeholder="e.g. 50000 or -25000"/></div>
-          <div><div class="form-label">Reason</div><input type="text" id="adj-note" placeholder="e.g. correcting accidental mid-Q charge"/></div>
+          <div><div class="form-label">Amount ($) — negative to deduct</div><input type="number" id="adj-amount" placeholder="e.g. 50000 or -25000"/></div>
+          <div><div class="form-label">Reason (required)</div><input type="text" id="adj-note" placeholder="e.g. correcting accidental charge"/></div>
           <div style="display:flex;align-items:flex-end;"><button class="btn btn-warn" onclick="applyBankAdjustment()">Apply adjustment</button></div>
         </div>
-        <div id="adj-log-wrap">
-          <table id="adj-log-table" style="margin-top:8px;">
-            <thead><tr><th>SE</th><th>Adjustment</th><th>New balance</th><th>Reason</th><th>Time</th></tr></thead>
-            <tbody><tr><td colspan="5" style="color:#4a6280;text-align:center;padding:1rem;font-family:Share Tech Mono,monospace;font-size:11px">// no adjustments made</td></tr></tbody>
-          </table>
-        </div>
+        <table id="adj-log-table" style="margin-top:4px;">
+          <thead><tr><th>SE</th><th>Adjustment</th><th>New balance</th><th>Reason</th><th>Time</th></tr></thead>
+          <tbody><tr><td colspan="5" style="color:#4a6280;text-align:center;padding:1rem;font-family:Share Tech Mono,monospace;font-size:11px">// no adjustments</td></tr></tbody>
+        </table>
       </div>
     </div>
     <div id="tokens-viewer-view"></div>
   </div>
 
+  <!-- TOKEN MARKET -->
   <div id="tab-trades" class="section">
     <div id="trades-admin-controls">
-      <div class="warn-box">Token purchase price is deducted from buyer's bank and credited to seller. T1=$10k · T2=$20k · T3=$30k · T4=$40k · T5=$50k · T6=$60k · T7=$70k · T8=$80k · T9=$90k · T10=$100k</div>
+      <div class="info-box">Token prices are set freely between SEs — negotiate a price and ask the admin to log the trade. Buyer's bank is charged; seller's bank is credited. Burned tokens (on closed deals) cannot be sold. Banks cannot go negative.</div>
       <div class="card">
         <div class="card-title">Execute trade</div>
         <div class="form-row">
           <div><div class="form-label">Seller</div><select id="trade-seller" onchange="populateSellerTokens()"></select></div>
-          <div><div class="form-label">Token to sell</div><select id="trade-token"></select></div>
+          <div><div class="form-label">Token to sell <span class="tip" data-tip="Only tokens not assigned to closed deals are tradeable.">?</span></div><select id="trade-token"></select></div>
           <div><div class="form-label">Buyer</div><select id="trade-buyer"></select></div>
+          <div><div class="form-label">Agreed price ($)</div><input type="number" id="trade-price" placeholder="e.g. 75000"/></div>
           <div style="display:flex;align-items:flex-end;"><button class="btn btn-primary" onclick="executeTrade()">Execute trade</button></div>
         </div>
       </div>
@@ -267,19 +384,130 @@ select option{background:#0d1524;}
 </div>
 
 <script>
+// ─── CONSTANTS ────────────────────────────────────────────────────────────────
 const SE_NAMES=['Riley Finger','Michael Cieslak','Adam Kissee','Shaun Benson','Eric Lorenzo','Katherine Morales','Brandon Quach','David Blagaila','Karthik Pradeep','Katherine Peppler','Mikinzi Strykul','Rohan Sahoo'];
-const ADMIN_PASSWORD='spiff2025';
-const STARTING_BANK=25000,REASSIGN_COST=50000,TOKEN_COUNT=10;
+const SE_EMAILS={
+  'Riley Finger':'riley.finger@verkada.com',
+  'Michael Cieslak':'michael.cieslak@verkada.com',
+  'Adam Kissee':'adam.kissee@verkada.com',
+  'Shaun Benson':'shaun.benson@verkada.com',
+  'Eric Lorenzo':'eric.lorenzo@verkada.com',
+  'Katherine Morales':'katherine.morales@verkada.com',
+  'Brandon Quach':'brandon.quach@verkada.com',
+  'David Blagaila':'david.blagaila@verkada.com',
+  'Karthik Pradeep':'karthik.pradeep@verkada.com',
+  'Katherine Peppler':'katherine.peppler@verkada.com',
+  'Mikinzi Strykul':'mikinzi.strykul@verkada.com',
+  'Rohan Sahoo':'rohan.sahoo@verkada.com'
+};
+const STARTING_BANK=100000,REASSIGN_COST=100000,TOKEN_COUNT=10,MAX_REASSIGNS=2;
 const TMULT=t=>t;
 const TVAL=t=>TMULT(t)*10000;
 const fmt=n=>'$'+Math.round(n).toLocaleString();
 
+// ─── REASSIGNMENT WINDOWS ─────────────────────────────────────────────────────
+// Window 1: June 1-5, Window 2: July 1-5 (month is 0-indexed)
+const WINDOWS=[
+  {label:'Window 1 — Month 2',start:new Date(2026,5,1),end:new Date(2026,5,5,23,59,59)},
+  {label:'Window 2 — Month 3',start:new Date(2026,6,1),end:new Date(2026,6,5,23,59,59)}
+];
+
+function getWindowStatus(){
+  const now=new Date();
+  for(const w of WINDOWS){
+    if(now>=w.start&&now<=w.end)return{status:'open',window:w};
+  }
+  // find next upcoming
+  const upcoming=WINDOWS.filter(w=>now<w.start).sort((a,b)=>a.start-b.start)[0];
+  if(upcoming)return{status:'upcoming',window:upcoming};
+  return{status:'closed',window:null};
+}
+
+function isReassignWindowOpen(){return getWindowStatus().status==='open';}
+
+function fmtCountdown(ms){
+  if(ms<=0)return'00:00:00';
+  const d=Math.floor(ms/86400000);
+  const h=Math.floor((ms%86400000)/3600000);
+  const m=Math.floor((ms%3600000)/60000);
+  const s=Math.floor((ms%60000)/1000);
+  if(d>0)return`${d}d ${h}h ${m}m`;
+  return`${String(h).padStart(2,'0')}:${String(m).padStart(2,'0')}:${String(s).padStart(2,'0')}`;
+}
+
+function renderWindowBanner(){
+  const ws=getWindowStatus();
+  const now=new Date();
+  const banner=document.getElementById('window-banner');
+  let html='';
+  if(ws.status==='open'){
+    const remaining=ws.window.end-now;
+    html=`<div class="window-banner open">
+      <div>
+        <div class="window-status open">🟢 REASSIGNMENT WINDOW OPEN</div>
+        <div class="window-detail">${ws.window.label} · Closes ${ws.window.end.toLocaleDateString('en-US',{month:'short',day:'numeric'})} at midnight<br>
+        Cost: $100,000 per reassignment · Max 2 per token · Burned tokens cannot be reassigned</div>
+      </div>
+      <div class="countdown-block">
+        <div class="countdown-label">Window closes in</div>
+        <div class="countdown-time" id="banner-countdown">${fmtCountdown(remaining)}</div>
+      </div>
+    </div>`;
+  } else if(ws.status==='upcoming'){
+    const until=ws.window.start-now;
+    html=`<div class="window-banner upcoming">
+      <div>
+        <div class="window-status upcoming">🟡 NEXT WINDOW: ${ws.window.label}</div>
+        <div class="window-detail">Opens ${ws.window.start.toLocaleDateString('en-US',{month:'short',day:'numeric'})} · Reassignment locked until then</div>
+      </div>
+      <div class="countdown-block">
+        <div class="countdown-label">Window opens in</div>
+        <div class="countdown-time" id="banner-countdown">${fmtCountdown(until)}</div>
+      </div>
+    </div>`;
+  } else {
+    html=`<div class="window-banner closed">
+      <div>
+        <div class="window-status closed">🔴 REASSIGNMENT LOCKED</div>
+        <div class="window-detail">Both reassignment windows have passed. Token assignments are final.</div>
+      </div>
+    </div>`;
+  }
+  banner.innerHTML=html;
+}
+
+function renderTimelineCard(){
+  const now=new Date();
+  const card=document.getElementById('timeline-card');
+  const rows=WINDOWS.map((w,i)=>{
+    const open=now>=w.start&&now<=w.end;
+    const past=now>w.end;
+    const color=open?'#5DCAA5':past?'#4a6280':'#EF9F27';
+    const status=open?'OPEN NOW':past?'CLOSED':'UPCOMING';
+    return`<tr>
+      <td class="mono" style="color:${color}">${status}</td>
+      <td style="color:#e8f4f8">${w.label}</td>
+      <td class="mono">${w.start.toLocaleDateString('en-US',{month:'short',day:'numeric',year:'numeric'})}</td>
+      <td class="mono">${w.end.toLocaleDateString('en-US',{month:'short',day:'numeric',year:'numeric'})}</td>
+      <td style="color:#4a6280;font-size:11px;font-family:Share Tech Mono,monospace">5-day window · $100k/reassign · max 2/token</td>
+    </tr>`;
+  }).join('');
+  card.innerHTML=`<div class="card-title">Quarter timeline</div>
+    <table><thead><tr><th>Status</th><th>Window</th><th>Opens</th><th>Closes</th><th>Rules</th></tr></thead>
+    <tbody>${rows}</tbody></table>`;
+}
+
+// ─── STATE ────────────────────────────────────────────────────────────────────
 let currentRole=null,currentUser=null,loginMode='admin';
 let state={ses:[],opps:[]};
 let oppCounter=1;
 
 function initState(){
-  state={ses:SE_NAMES.map((name,i)=>({id:i,name,bank:STARTING_BANK,tokens:Array.from({length:TOKEN_COUNT},(_,j)=>({num:j+1,oppId:null,ownerId:i}))})),opps:[],trades:[],adjustments:[]};
+  state={
+    ses:SE_NAMES.map((name,i)=>({id:i,name,bank:STARTING_BANK,
+      tokens:Array.from({length:TOKEN_COUNT},(_,j)=>({num:j+1,oppId:null,ownerId:i,reassignCount:0,burned:false}))})),
+    opps:[],trades:[],adjustments:[]
+  };
   oppCounter=1;
 }
 
@@ -288,7 +516,25 @@ let _adminPass=sessionStorage.getItem('spiff_admin_pass')||'';
 async function loadState(){
   try{
     const r=await fetch('/api/state');
-    if(r.ok){const data=await r.json();if(data&&data.state){state=data.state;oppCounter=data.oppCounter||1;if(!state.trades)state.trades=[];if(!state.adjustments)state.adjustments=[];return;}}
+    if(r.ok){
+      const data=await r.json();
+      if(data&&data.state){
+        state=data.state;oppCounter=data.oppCounter||1;
+        if(!state.trades)state.trades=[];
+        if(!state.adjustments)state.adjustments=[];
+        // backfill burned flag on old tokens
+        state.ses.forEach(se=>se.tokens.forEach(t=>{
+          if(t.reassignCount===undefined)t.reassignCount=0;
+          if(t.burned===undefined)t.burned=false;
+          // auto-burn tokens whose opp is already closed
+          if(t.oppId!==null&&!t.burned){
+            const opp=state.opps.find(o=>o.id===t.oppId);
+            if(opp&&(opp.stage==='closed_won'||opp.stage==='closed_lost'))t.burned=true;
+          }
+        }));
+        return;
+      }
+    }
   }catch(e){}
   initState();
 }
@@ -298,27 +544,36 @@ async function saveState(){
   if(ind){ind.textContent='saving...';ind.className='save-indicator';}
   const payload=JSON.stringify({state,oppCounter});
   const sizeKB=Math.round(payload.length/1024);
-  if(sizeKB>4000){
-    console.warn(`Payload too large: ${sizeKB}KB`);
-    if(ind){ind.textContent=`save failed (too large: ${sizeKB}KB)`;ind.className='save-indicator err';}
-    return;
-  }
+  if(sizeKB>4000){if(ind){ind.textContent=`save failed (${sizeKB}KB too large)`;ind.className='save-indicator err';}return;}
   try{
     const r=await fetch('/api/state',{method:'POST',headers:{'Content-Type':'application/json','x-admin-pass':_adminPass},body:payload});
-    if(r.ok){
-      if(ind){ind.textContent='saved';ind.className='save-indicator ok';setTimeout(()=>{ind.textContent='';},1500);}
-    }else{
-      const errText=await r.text();
-      console.error('Save failed:',r.status,errText);
-      if(ind){ind.textContent=`save failed (${r.status})`;ind.className='save-indicator err';}
-    }
-  }catch(e){
-    console.error('Save error:',e);
-    if(ind){ind.textContent='save failed';ind.className='save-indicator err';}
-  }
+    if(r.ok){if(ind){ind.textContent='saved';ind.className='save-indicator ok';setTimeout(()=>{ind.textContent='';},1500);}}
+    else{if(ind){ind.textContent=`save failed (${r.status})`;ind.className='save-indicator err';}}
+  }catch(e){if(ind){ind.textContent='save failed';ind.className='save-indicator err';}}
 }
 
+// ─── BURN LOGIC ───────────────────────────────────────────────────────────────
+function burnTokensForOpp(oppId){
+  state.ses.forEach(se=>se.tokens.forEach(t=>{
+    if(t.oppId===oppId)t.burned=true;
+  }));
+}
 
+// ─── END QUARTER ──────────────────────────────────────────────────────────────
+async function endQuarter(){
+  if(!confirm('CLOSE QUARTER: All open opps with tokens assigned will be marked CLOSED LOST and values deducted from banks. This cannot be undone. Continue?'))return;
+  let count=0;
+  state.opps.forEach(opp=>{
+    if(opp.stage!=='open')return;
+    const hasToken=state.ses.some(se=>se.tokens.some(t=>t.oppId===opp.id));
+    if(hasToken){opp.stage='closed_lost';burnTokensForOpp(opp.id);count++;}
+  });
+  await saveState();
+  renderAll();
+  alert(`Quarter closed. ${count} open opportunit${count===1?'y':'ies'} marked Closed Lost and settled.`);
+}
+
+// ─── LOGIN ────────────────────────────────────────────────────────────────────
 function setLoginMode(mode){
   loginMode=mode;
   document.getElementById('mode-admin').className='login-mode-btn'+(mode==='admin'?' active':'');
@@ -332,10 +587,9 @@ async function doLogin(){
   if(loginMode==='admin'){
     const pass=document.getElementById('login-pass').value;
     err.textContent='// authenticating...';
-    try{
-      const r=await fetch('/api/auth',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({role:'admin',password:pass})});
+    try{const r=await fetch('/api/auth',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({role:'admin',password:pass})});
       if(!r.ok){err.textContent='// incorrect password';return;}
-    }catch(e){err.textContent='// server error, try again';return;}
+    }catch(e){err.textContent='// server error';return;}
     _adminPass=pass;
     sessionStorage.setItem('spiff_admin_pass',pass);
     sessionStorage.setItem('spiff_role','admin');
@@ -344,13 +598,11 @@ async function doLogin(){
   }else{
     const name=document.getElementById('viewer-name').value;
     const pass=document.getElementById('viewer-pass').value;
-    if(!name){err.textContent='// select your name';return;}
     if(!pass){err.textContent='// enter the viewer password';return;}
     err.textContent='// authenticating...';
-    try{
-      const r=await fetch('/api/auth',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({role:'viewer',password:pass})});
+    try{const r=await fetch('/api/auth',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({role:'viewer',password:pass})});
       if(!r.ok){err.textContent='// incorrect password';return;}
-    }catch(e){err.textContent='// server error, try again';return;}
+    }catch(e){err.textContent='// server error';return;}
     currentRole='viewer';currentUser=name;
     sessionStorage.setItem('spiff_role','viewer');
     sessionStorage.setItem('spiff_viewer',name);
@@ -363,7 +615,7 @@ async function doLogin(){
   document.getElementById('main-app').style.display='block';
   document.getElementById('role-badge').textContent=currentRole==='admin'?'ADMIN':'VIEW ONLY';
   document.getElementById('role-badge').className='role-badge '+(currentRole==='admin'?'role-admin':'role-viewer');
-  applyRoleUI();renderAll();
+  applyRoleUI();renderAll();startTimers();
 }
 
 function doLogout(){
@@ -376,9 +628,31 @@ function doLogout(){
 
 function applyRoleUI(){
   const isAdmin=currentRole==='admin';
-  ['opps-admin-controls','tokens-admin-controls','trades-admin-controls'].forEach(id=>{const el=document.getElementById(id);if(el)el.style.display=isAdmin?'block':'none';});
+  ['opps-admin-controls','tokens-admin-controls','trades-admin-controls'].forEach(id=>{
+    const el=document.getElementById(id);if(el)el.style.display=isAdmin?'block':'none';
+  });
+  const eq=document.getElementById('end-quarter-admin');
+  if(eq)eq.style.display=isAdmin?'block':'none';
 }
 
+// ─── TIMERS ───────────────────────────────────────────────────────────────────
+let _timerInterval=null;
+function startTimers(){
+  if(_timerInterval)clearInterval(_timerInterval);
+  renderWindowBanner();renderTimelineCard();
+  _timerInterval=setInterval(()=>{
+    const ws=getWindowStatus();
+    const el=document.getElementById('banner-countdown');
+    if(el){
+      const now=new Date();
+      const target=ws.status==='open'?ws.window.end:ws.status==='upcoming'?ws.window.start:null;
+      if(target)el.textContent=fmtCountdown(target-now);
+    }
+    renderWindowBanner();
+  },1000);
+}
+
+// ─── TABS ─────────────────────────────────────────────────────────────────────
 function showTab(name,el){
   document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));
   document.querySelectorAll('.section').forEach(s=>s.classList.remove('active'));
@@ -389,21 +663,22 @@ function showTab(name,el){
 function renderAll(){
   const active=document.querySelector('.section.active');if(!active)return;
   const id=active.id;
-  if(id==='tab-leaderboard')renderLeaderboard();
+  if(id==='tab-leaderboard'){renderLeaderboard();renderWindowBanner();renderTimelineCard();}
   else if(id==='tab-opps')renderOpps();
   else if(id==='tab-tokens')renderTokenTab();
   else if(id==='tab-trades')renderTradeTab();
 }
 
+// ─── SCORING ──────────────────────────────────────────────────────────────────
 function getSEScores(){
   return state.ses.map(se=>{
-    let closedWonRev=0,closedLostRisk=0,openProjRev=0;
+    let closedWonRev=0,closedLostRisk=0,openProjRev=0,realRevenue=0;
     se.tokens.forEach(tok=>{
       if(tok.oppId!==null){
         const opp=state.opps.find(o=>o.id===tok.oppId);
         if(opp){
           const m=TMULT(tok.num);
-          if(opp.stage==='closed_won')closedWonRev+=opp.value*m;
+          if(opp.stage==='closed_won'){closedWonRev+=opp.value*m;realRevenue+=opp.value;}
           else if(opp.stage==='closed_lost')closedLostRisk+=opp.value;
           else if(opp.stage==='open')openProjRev+=opp.value*m;
         }
@@ -412,7 +687,7 @@ function getSEScores(){
     const bank=se.bank+closedWonRev-closedLostRisk;
     const totalTokens=se.tokens.length;
     const tokensUsed=se.tokens.filter(t=>t.oppId!==null).length;
-    return{...se,closedWonRev,closedLostRisk,openProjRev,bank,totalTokens,tokensUsed};
+    return{...se,closedWonRev,closedLostRisk,openProjRev,realRevenue,bank,totalTokens,tokensUsed};
   }).sort((a,b)=>b.bank-a.bank);
 }
 
@@ -425,7 +700,7 @@ function renderLeaderboard(){
     <div class="metric"><div class="metric-label">SEs competing</div><div class="metric-value">${state.ses.length}</div></div>
     <div class="metric"><div class="metric-label">Opportunities</div><div class="metric-value">${state.opps.length}</div></div>
     <div class="metric"><div class="metric-label">Proj. open revenue</div><div class="metric-value" style="font-size:14px;color:#EF9F27">${fmt(totalProj)}</div></div>
-    <div class="metric"><div class="metric-label">Closed won revenue</div><div class="metric-value" style="font-size:14px;color:#5DCAA5">${fmt(totalWon)}</div></div>
+    <div class="metric"><div class="metric-label">Game revenue (won)</div><div class="metric-value" style="font-size:14px;color:#5DCAA5">${fmt(totalWon)}</div></div>
     <div class="metric"><div class="metric-label">Avg bank balance</div><div class="metric-value" style="font-size:14px">${fmt(avgBank)}</div></div>
   `;
   document.querySelector('#leaderboard-table tbody').innerHTML=scores.map((se,i)=>{
@@ -436,6 +711,7 @@ function renderLeaderboard(){
       <td class="mono">${se.tokensUsed}/${se.totalTokens}</td>
       <td class="mono">${se.totalTokens-se.tokensUsed}</td>
       <td class="mono" style="color:#EF9F27">${se.openProjRev>0?fmt(se.openProjRev):'—'}</td>
+      <td class="mono" style="color:#85B7EB">${se.realRevenue>0?fmt(se.realRevenue):'—'}</td>
       <td class="mono" style="color:#5DCAA5">${se.closedWonRev>0?fmt(se.closedWonRev):'—'}</td>
       <td class="mono" style="color:${se.closedLostRisk>0?'#e24b4a':'#4a6280'}">${se.closedLostRisk>0?'-'+fmt(se.closedLostRisk):'—'}</td>
       <td><span class="${se.bank>=STARTING_BANK?'pos':'neg'}">${fmt(se.bank)}</span></td>
@@ -443,6 +719,7 @@ function renderLeaderboard(){
   }).join('');
 }
 
+// ─── OPPORTUNITIES ────────────────────────────────────────────────────────────
 async function addOpp(){
   const name=document.getElementById('opp-name').value.trim();
   const value=parseFloat(document.getElementById('opp-value').value);
@@ -450,22 +727,31 @@ async function addOpp(){
   const sfUrl=document.getElementById('opp-sf').value.trim();
   if(!name||isNaN(value)||value<=0){alert('Enter a valid name and value.');return;}
   state.opps.push({id:oppCounter++,name,value,stage,sfUrl});
-  document.getElementById('opp-name').value='';
-  document.getElementById('opp-value').value='';
-  document.getElementById('opp-sf').value='';
+  document.getElementById('opp-name').value='';document.getElementById('opp-value').value='';document.getElementById('opp-sf').value='';
   await saveState();renderOpps();
 }
 
 async function updateOppStage(id,stage){
   const opp=state.opps.find(o=>o.id===id);if(!opp)return;
-  const old=opp.stage;opp.stage=stage;
+  const prev=opp.stage;
+  opp.stage=stage;
+  // burn tokens when opp closes
+  if((stage==='closed_won'||stage==='closed_lost')&&prev==='open')burnTokensForOpp(id);
+  await saveState();renderOpps();
+}
+
+async function updateOppValue(id,val){
+  const opp=state.opps.find(o=>o.id===id);if(!opp)return;
+  const v=parseFloat(val);
+  if(isNaN(v)||v<=0){alert('Enter a valid value.');return;}
+  opp.value=v;
   await saveState();renderOpps();
 }
 
 async function removeOpp(id){
   const opp=state.opps.find(o=>o.id===id);
   if(!opp||!confirm(`Remove "${opp.name}"?`))return;
-  state.ses.forEach(se=>se.tokens.forEach(tok=>{if(tok.oppId===id)tok.oppId=null;}));
+  state.ses.forEach(se=>se.tokens.forEach(tok=>{if(tok.oppId===id){tok.oppId=null;tok.burned=false;}}));
   state.opps=state.opps.filter(o=>o.id!==id);
   await saveState();renderOpps();
 }
@@ -476,17 +762,31 @@ function renderOpps(){
   if(state.opps.length===0){tbody.innerHTML='<tr><td colspan="6" style="color:#4a6280;text-align:center;padding:1.5rem;font-family:Share Tech Mono,monospace;font-size:11px">// no opportunities loaded</td></tr>';return;}
   tbody.innerHTML=state.opps.map(opp=>{
     let assignedPill='<span style="color:#4a6280;font-size:10px;font-family:Share Tech Mono,monospace">none</span>';
-    for(const se of state.ses){const tok=se.tokens.find(t=>t.oppId===opp.id);if(tok){assignedPill=`<span class="token-pill on">${se.name.split(' ')[0]} T${tok.num}·${TMULT(tok.num)}x</span>`;break;}}
+    for(const se of state.ses){
+      const tok=se.tokens.find(t=>t.oppId===opp.id);
+      if(tok){
+        const burned=tok.burned?'<span class="burned-label">BURNED</span>':'';
+        assignedPill=`<span class="token-pill on">${se.name.split(' ')[0]} T${tok.num}·${TMULT(tok.num)}x${burned}</span>`;break;
+      }
+    }
     const stageColor=opp.stage==='closed_won'?'#5DCAA5':opp.stage==='closed_lost'?'#e24b4a':'#EF9F27';
     const stageSel=isAdmin
-      ?`<select onchange="updateOppStage(${opp.id},this.value)" style="width:130px;font-size:12px;"><option value="open"${opp.stage==='open'?' selected':''}>Open</option><option value="closed_won"${opp.stage==='closed_won'?' selected':''}>Closed won</option><option value="closed_lost"${opp.stage==='closed_lost'?' selected':''}>Closed lost</option></select>`
+      ?`<select onchange="updateOppStage(${opp.id},this.value)" style="width:130px;font-size:12px;">
+          <option value="open"${opp.stage==='open'?' selected':''}>Open</option>
+          <option value="closed_won"${opp.stage==='closed_won'?' selected':''}>Closed won</option>
+          <option value="closed_lost"${opp.stage==='closed_lost'?' selected':''}>Closed lost</option>
+        </select>`
       :`<span class="mono" style="font-size:11px;color:${stageColor}">${opp.stage.replace('_',' ')}</span>`;
+    // editable value for admin
+    const valCell=isAdmin
+      ?`<input type="number" value="${opp.value}" onblur="updateOppValue(${opp.id},this.value)" style="width:110px;font-size:12px;padding:4px 6px;" title="Click to edit value"/>`
+      :`<span class="mono" style="color:#5DCAA5">${fmt(opp.value)}</span>`;
     const sfCell=opp.sfUrl
       ?`<td><a href="${opp.sfUrl}" target="_blank" style="color:#027DAD;font-size:11px;font-family:'Share Tech Mono',monospace;text-decoration:none;border:1px solid #027DAD33;padding:2px 8px;border-radius:3px;">SF ↗</a></td>`
       :`<td><span style="color:#4a6280;font-size:10px;font-family:'Share Tech Mono',monospace">—</span></td>`;
     return`<tr>
       <td style="color:#e8f4f8;font-weight:600">${opp.name}</td>
-      <td class="mono" style="color:#5DCAA5">${fmt(opp.value)}</td>
+      <td>${valCell}</td>
       <td>${stageSel}</td>
       ${sfCell}
       <td>${assignedPill}</td>
@@ -495,25 +795,59 @@ function renderOpps(){
   }).join('');
 }
 
+// ─── TOKEN ASSIGNMENTS ────────────────────────────────────────────────────────
 function renderTokenTab(){
   const isAdmin=currentRole==='admin';
+  const windowOpen=isReassignWindowOpen();
   if(isAdmin){
+    // update warn box
+    const wb=document.getElementById('tokens-warn-box');
+    if(wb){
+      if(windowOpen){
+        wb.className='success-box';
+        wb.textContent='✅ REASSIGNMENT WINDOW IS OPEN — SEs may reassign tokens for $100,000 each (max 2 per token). Window closes '+WINDOWS.find(w=>new Date()>=w.start&&new Date()<=w.end).end.toLocaleDateString('en-US',{month:'short',day:'numeric'})+'.';
+      }else{
+        wb.className='warn-box';
+        wb.textContent='🔒 Reassignment window is CLOSED. Initial token assignments are free. Use the Reassign button only during June 1-5 or July 1-5.';
+      }
+    }
+    // update reassign button state
+    const rb=document.getElementById('reassign-btn');
+    if(rb){
+      rb.className='btn btn-warn'+(windowOpen?'':' btn-disabled');
+    }
     document.getElementById('assign-se').innerHTML=state.ses.map(se=>`<option value="${se.id}">${se.name}</option>`).join('');
     document.getElementById('adj-se').innerHTML=state.ses.map(se=>`<option value="${se.id}">${se.name}</option>`).join('');
     populateAssignTokenOptions();renderTokensForSE();renderAdjLog();
   }else{
     const el=document.getElementById('tokens-viewer-view');
     const mySE=state.ses.find(s=>s.name===currentUser);
-    el.innerHTML=mySE
-      ?`<div class="card"><div class="card-title">${mySE.name} — your token assignments</div><div>${mySE.tokens.map(t=>{const opp=t.oppId!==null?state.opps.find(o=>o.id===t.oppId):null;return`<span class="token-pill ${opp?'on':''}">T${t.num}·${TMULT(t.num)}x ${opp?'→ '+opp.name:'unassigned'}</span>`;}).join('')}</div><div style="margin-top:12px;font-size:11px;color:#4a6280;font-family:Share Tech Mono,monospace">bank balance: <span style="color:#027DAD">${fmt(mySE.bank)}</span></div></div>`
-      :'<div class="card"><div style="color:#4a6280;font-family:Share Tech Mono,monospace;font-size:11px">// account not found</div></div>';
+    if(!mySE){el.innerHTML='<div class="card"><div style="color:#4a6280;font-family:Share Tech Mono,monospace;font-size:11px">// account not found</div></div>';return;}
+    const winStatus=windowOpen?`<div class="success-box" style="margin-top:1rem">✅ Reassignment window is OPEN — contact admin to reassign a token ($100k each)</div>`:`<div class="warn-box" style="margin-top:1rem">🔒 Reassignment window is closed</div>`;
+    el.innerHTML=`<div class="card">
+      <div class="card-title">${mySE.name} — your token assignments</div>
+      <div>${mySE.tokens.map(t=>{
+        const opp=t.oppId!==null?state.opps.find(o=>o.id===t.oppId):null;
+        const burned=t.burned;
+        const used=t.reassignCount||0;
+        const cls=burned?'burned':opp?'on':'';
+        const burnTip=burned?' title="This token is burned — the deal it was assigned to has closed. It cannot be reassigned or sold."':'';
+        return`<span class="token-pill ${cls}"${burnTip}>T${t.num}·${TMULT(t.num)}x ${opp?'→ '+opp.name:'unassigned'}${burned?' 🔥':''} <span style="color:${used>=MAX_REASSIGNS?'#e24b4a':'#4a6280'};font-size:9px">[${used}/${MAX_REASSIGNS}]</span></span>`;
+      }).join('')}</div>
+      <div style="margin-top:12px;font-size:11px;color:#4a6280;font-family:Share Tech Mono,monospace">bank balance: <span style="color:#027DAD">${fmt(mySE.bank)}</span></div>
+      ${winStatus}
+    </div>`;
   }
 }
 
 function populateAssignTokenOptions(){
   const seId=parseInt(document.getElementById('assign-se').value);
   const se=state.ses.find(s=>s.id===seId);if(!se)return;
-  document.getElementById('assign-token').innerHTML=se.tokens.map(t=>`<option value="${t.num}">Token ${t.num} — ${TMULT(t.num)}x multiplier</option>`).join('');
+  document.getElementById('assign-token').innerHTML=se.tokens.map(t=>{
+    const burned=t.burned;
+    const label=`Token ${t.num} — ${TMULT(t.num)}x multiplier${burned?' 🔥 BURNED':''}`;
+    return`<option value="${t.num}"${burned?' disabled':''}>${label}</option>`;
+  }).join('');
 }
 
 function refreshOppDropdown(){
@@ -527,10 +861,11 @@ function refreshOppDropdown(){
   const oppSel=document.getElementById('assign-opp');
   oppSel.innerHTML='<option value="">-- unassign --</option>'+state.opps.map(o=>{
     const takenByOther=takenOppIds.has(o.id)&&o.id!==currentOppId;
+    const closed=o.stage!=='open';
+    const disabled=(takenByOther||closed)?' disabled':'';
     const selected=o.id===currentOppId?' selected':'';
-    const disabled=takenByOther?' disabled':'';
-    const label=takenByOther?`${o.name} (${fmt(o.value)}) — taken`:`${o.name} (${fmt(o.value)})`;
-    return`<option value="${o.id}"${selected}${disabled}>${label}</option>`;
+    const suffix=takenByOther?' — taken':closed?' — closed':'';
+    return`<option value="${o.id}"${selected}${disabled}>${o.name} (${fmt(o.value)})${suffix}</option>`;
   }).join('');
   if(currentOppId!==null)oppSel.value=String(currentOppId);
 }
@@ -539,7 +874,23 @@ function renderTokensForSE(){
   populateAssignTokenOptions();refreshOppDropdown();
   const seId=parseInt(document.getElementById('assign-se').value);
   const se=state.ses.find(s=>s.id===seId);if(!se)return;
-  document.getElementById('se-token-view').innerHTML=`<div style="margin-top:1rem;border-top:1px solid #1e2d42;padding-top:1rem"><div class="form-label" style="margin-bottom:8px">${se.name} — bank: <span style="color:#027DAD;font-family:Share Tech Mono,monospace">${fmt(se.bank)}</span></div><div>${se.tokens.map(t=>{const opp=t.oppId!==null?state.opps.find(o=>o.id===t.oppId):null;return`<span class="token-pill ${opp?'on':''}">T${t.num}·${TMULT(t.num)}x ${opp?'→ '+opp.name:'unassigned'}</span>`;}).join('')}</div></div>`;
+  document.getElementById('se-token-view').innerHTML=`
+    <div style="margin-top:1rem;border-top:1px solid #1e2d42;padding-top:1rem">
+      <div class="form-label" style="margin-bottom:8px">${se.name} — bank: <span style="color:#027DAD;font-family:Share Tech Mono,monospace">${fmt(se.bank)}</span></div>
+      <div>${se.tokens.map(t=>{
+        const opp=t.oppId!==null?state.opps.find(o=>o.id===t.oppId):null;
+        const used=t.reassignCount||0;
+        const burned=t.burned;
+        const cls=burned?'burned':opp?'on':'';
+        const maxed=used>=MAX_REASSIGNS;
+        const burnTip=burned?'title="BURNED — deal is closed. Cannot reassign or sell."':'';
+        return`<span class="token-pill ${cls} ${maxed&&!burned?'maxed':''}" ${burnTip}>
+          T${t.num}·${TMULT(t.num)}x ${opp?'→ '+opp.name:'unassigned'}
+          ${burned?' 🔥':''}
+          <span style="color:${maxed?'#e24b4a':'#4a6280'};font-size:9px">[${used}/${MAX_REASSIGNS}]</span>
+        </span>`;
+      }).join('')}</div>
+    </div>`;
 }
 
 async function assignToken(){
@@ -549,25 +900,67 @@ async function assignToken(){
   const oppId=oppIdRaw===''?null:parseInt(oppIdRaw);
   const se=state.ses.find(s=>s.id===seId);if(!se)return;
   const tok=se.tokens.find(t=>t.num===tokenNum);if(!tok)return;
+  if(tok.burned){alert('This token is burned — the deal it was assigned to has closed. It cannot be reassigned.');return;}
   if(oppId!==null){
+    const opp=state.opps.find(o=>o.id===oppId);
+    if(opp&&opp.stage!=='open'){alert('Cannot assign a token to a closed opportunity.');return;}
     const alreadyTaken=state.ses.some(s=>s.tokens.some(t=>t.oppId===oppId&&!(t.num===tokenNum&&s.id===seId)));
-    if(alreadyTaken){alert('This opportunity already has a token assigned.\nOnly one token is allowed per opportunity.');return;}
+    if(alreadyTaken){alert('This opportunity already has a token assigned. Only one token per opp.');return;}
   }
-  const oppName=oppId!==null?(state.opps.find(o=>o.id===oppId)||{name:'unknown'}).name:'(unassigned)';
   tok.oppId=oppId;
   await saveState();renderTokensForSE();renderOpps();
 }
 
 async function midQuarterReassign(){
+  if(!isReassignWindowOpen()){alert('Reassignment window is currently closed.\nWindows: June 1–5 and July 1–5.');return;}
   const seId=parseInt(document.getElementById('assign-se').value);
+  const tokenNum=parseInt(document.getElementById('assign-token').value);
   const se=state.ses.find(s=>s.id===seId);if(!se)return;
-  if(!confirm(`Charge ${se.name} $50,000 for mid-quarter reassignment?\nBank: ${fmt(se.bank)} → ${fmt(se.bank-REASSIGN_COST)}`))return;
+  const tok=se.tokens.find(t=>t.num===tokenNum);if(!tok)return;
+  if(tok.burned){alert('This token is burned and cannot be reassigned.');return;}
+  const used=tok.reassignCount||0;
+  if(used>=MAX_REASSIGNS){alert(`Token ${tokenNum} has been reassigned ${MAX_REASSIGNS} times — the maximum allowed.`);return;}
+  if(se.bank<REASSIGN_COST){alert(`Insufficient funds.\n${se.name} has ${fmt(se.bank)} but needs ${fmt(REASSIGN_COST)}.\nBanks cannot go negative.`);return;}
+  if(!confirm(`Charge ${se.name} ${fmt(REASSIGN_COST)} to reassign Token ${tokenNum}?\nBank: ${fmt(se.bank)} → ${fmt(se.bank-REASSIGN_COST)}\nReassigns used: ${used}/${MAX_REASSIGNS}`))return;
   se.bank-=REASSIGN_COST;
+  tok.reassignCount=(tok.reassignCount||0)+1;
   await saveState();renderTokensForSE();
 }
 
+// ─── BANK ADJUSTMENT ─────────────────────────────────────────────────────────
+async function applyBankAdjustment(){
+  const seId=parseInt(document.getElementById('adj-se').value);
+  const amount=parseFloat(document.getElementById('adj-amount').value);
+  const note=document.getElementById('adj-note').value.trim();
+  const se=state.ses.find(s=>s.id===seId);if(!se)return;
+  if(isNaN(amount)||amount===0){alert('Enter a non-zero amount.');return;}
+  if(!note){alert('Please enter a reason.');return;}
+  if(se.bank+amount<0){alert(`This would put ${se.name}'s bank at ${fmt(se.bank+amount)}.\nBanks cannot go negative.`);return;}
+  const dir=amount>0?'+':'';
+  if(!confirm(`Adjust ${se.name} by ${dir}${fmt(amount)}?\n${fmt(se.bank)} → ${fmt(se.bank+amount)}\nReason: ${note}`))return;
+  se.bank+=amount;
+  if(!state.adjustments)state.adjustments=[];
+  state.adjustments.unshift({seName:se.name,amount,newBalance:se.bank,note,time:new Date().toLocaleTimeString([],{hour:'2-digit',minute:'2-digit'})});
+  if(state.adjustments.length>50)state.adjustments.length=50;
+  document.getElementById('adj-amount').value='';document.getElementById('adj-note').value='';
+  await saveState();renderAdjLog();renderTokensForSE();
+}
+
+function renderAdjLog(){
+  const tbody=document.querySelector('#adj-log-table tbody');
+  const adjs=state.adjustments||[];
+  if(adjs.length===0){tbody.innerHTML='<tr><td colspan="5" style="color:#4a6280;text-align:center;padding:1rem;font-family:Share Tech Mono,monospace;font-size:11px">// no adjustments</td></tr>';return;}
+  tbody.innerHTML=adjs.map(a=>{
+    const dir=a.amount>0?'+':'';const col=a.amount>0?'#5DCAA5':'#e24b4a';
+    return`<tr><td style="color:#e8f4f8">${a.seName}</td><td class="mono" style="color:${col}">${dir}${fmt(a.amount)}</td><td class="mono" style="color:#027DAD">${fmt(a.newBalance)}</td><td style="font-size:12px">${a.note}</td><td class="audit-time">${a.time}</td></tr>`;
+  }).join('');
+}
+
+// ─── TOKEN MARKET ─────────────────────────────────────────────────────────────
 function renderTradeTab(){
-  ['trade-seller','trade-buyer'].forEach(id=>{document.getElementById(id).innerHTML=state.ses.map(se=>`<option value="${se.id}">${se.name}</option>`).join('');});
+  ['trade-seller','trade-buyer'].forEach(id=>{
+    document.getElementById(id).innerHTML=state.ses.map(se=>`<option value="${se.id}">${se.name}</option>`).join('');
+  });
   document.getElementById('trade-buyer').selectedIndex=1;
   populateSellerTokens();renderTradeLog();
 }
@@ -575,27 +968,32 @@ function renderTradeTab(){
 function populateSellerTokens(){
   const seId=parseInt(document.getElementById('trade-seller').value);
   const se=state.ses.find(s=>s.id===seId);if(!se)return;
-  document.getElementById('trade-token').innerHTML=se.tokens.map(t=>`<option value="${t.num}">Token ${t.num} (${TMULT(t.num)}x) — ${fmt(TVAL(t.num))}</option>`).join('');
+  // only show non-burned tokens
+  document.getElementById('trade-token').innerHTML=se.tokens
+    .filter(t=>!t.burned)
+    .map(t=>`<option value="${t.num}">Token ${t.num} (${TMULT(t.num)}x)${t.oppId!==null?' — assigned':' — unassigned'}</option>`).join('');
 }
 
 async function executeTrade(){
   const sellerId=parseInt(document.getElementById('trade-seller').value);
   const buyerId=parseInt(document.getElementById('trade-buyer').value);
   const tokenNum=parseInt(document.getElementById('trade-token').value);
+  const price=parseFloat(document.getElementById('trade-price').value);
   if(sellerId===buyerId){alert('Seller and buyer must be different.');return;}
+  if(isNaN(price)||price<0){alert('Enter a valid price (0 or more).');return;}
   const seller=state.ses.find(s=>s.id===sellerId);
   const buyer=state.ses.find(s=>s.id===buyerId);
-  const tokIdx=seller.tokens.findIndex(t=>t.num===tokenNum);
-  if(tokIdx===-1){alert('Token not found on seller.');return;}
-  const price=TVAL(tokenNum);
-  if(buyer.bank<price){alert(`${buyer.name} needs ${fmt(price)} but only has ${fmt(buyer.bank)}.`);return;}
-  if(!confirm(`Transfer Token ${tokenNum} from ${seller.name} to ${buyer.name}\nPrice: ${fmt(price)}\nBuyer bank:  ${fmt(buyer.bank)} → ${fmt(buyer.bank-price)}\nSeller bank: ${fmt(seller.bank)} → ${fmt(seller.bank+price)}`))return;
+  const tokIdx=seller.tokens.findIndex(t=>t.num===tokenNum&&!t.burned);
+  if(tokIdx===-1){alert('Token not found or is burned (assigned to a closed deal).');return;}
+  if(buyer.bank<price){alert(`Insufficient funds.\n${buyer.name} has ${fmt(buyer.bank)} but needs ${fmt(price)}.\nBanks cannot go negative.`);return;}
+  if(!confirm(`Transfer Token ${tokenNum} (${TMULT(tokenNum)}x) from ${seller.name} to ${buyer.name}\nAgreed price: ${fmt(price)}\nBuyer:  ${fmt(buyer.bank)} → ${fmt(buyer.bank-price)}\nSeller: ${fmt(seller.bank)} → ${fmt(seller.bank+price)}`))return;
   buyer.bank-=price;seller.bank+=price;
   const tok=seller.tokens.splice(tokIdx,1)[0];
   tok.ownerId=buyerId;
   buyer.tokens.push(tok);buyer.tokens.sort((a,b)=>a.num-b.num);
   if(!state.trades)state.trades=[];
-  state.trades.unshift({seller:seller.name,buyer:buyer.name,tokenNum,price:TVAL(tokenNum),time:new Date().toLocaleTimeString([],{hour:'2-digit',minute:'2-digit'})});
+  state.trades.unshift({seller:seller.name,buyer:buyer.name,tokenNum,price,time:new Date().toLocaleTimeString([],{hour:'2-digit',minute:'2-digit'})});
+  document.getElementById('trade-price').value='';
   await saveState();populateSellerTokens();renderTradeLog();
 }
 
@@ -612,132 +1010,61 @@ function renderTradeLog(){
   </tr>`).join('');
 }
 
-
-async function applyBankAdjustment(){
-  const seId=parseInt(document.getElementById('adj-se').value);
-  const amount=parseFloat(document.getElementById('adj-amount').value);
-  const note=document.getElementById('adj-note').value.trim();
-  const se=state.ses.find(s=>s.id===seId);
-  if(!se){alert('Select a valid SE.');return;}
-  if(isNaN(amount)||amount===0){alert('Enter a non-zero adjustment amount.');return;}
-  if(!note){alert('Please enter a reason for the adjustment.');return;}
-  const dir=amount>0?'+':'';
-  if(!confirm(`Adjust ${se.name}'s bank by ${dir}${fmt(amount)}?\nCurrent: ${fmt(se.bank)} → New: ${fmt(se.bank+amount)}\nReason: ${note}`))return;
-  se.bank+=amount;
-  if(!state.adjustments)state.adjustments=[];
-  state.adjustments.unshift({
-    seName:se.name,
-    amount,
-    newBalance:se.bank,
-    note,
-    time:new Date().toLocaleTimeString([],{hour:'2-digit',minute:'2-digit'})
-  });
-  if(state.adjustments.length>50)state.adjustments.length=50;
-  document.getElementById('adj-amount').value='';
-  document.getElementById('adj-note').value='';
-  await saveState();
-  renderAdjLog();
-  renderTokensForSE();
-}
-
-function renderAdjLog(){
-  const tbody=document.querySelector('#adj-log-table tbody');
-  const adjs=state.adjustments||[];
-  if(adjs.length===0){
-    tbody.innerHTML='<tr><td colspan="5" style="color:#4a6280;text-align:center;padding:1rem;font-family:Share Tech Mono,monospace;font-size:11px">// no adjustments made</td></tr>';
-    return;
-  }
-  tbody.innerHTML=adjs.map(a=>{
-    const dir=a.amount>0?'+':'';
-    const col=a.amount>0?'#5DCAA5':'#e24b4a';
-    return`<tr>
-      <td style="color:#e8f4f8;font-weight:600">${a.seName}</td>
-      <td class="mono" style="color:${col}">${dir}${fmt(a.amount)}</td>
-      <td class="mono" style="color:#027DAD">${fmt(a.newBalance)}</td>
-      <td style="color:#c8d6e5;font-size:12px">${a.note}</td>
-      <td class="audit-time">${a.time}</td>
-    </tr>`;
-  }).join('');
-}
-
+// ─── CSV ──────────────────────────────────────────────────────────────────────
 function downloadTemplate(){
   const csv='opp_name,value,stage,sf_url,se_name,token_num\nAcme Corp Renewal,50000,open,https://verkada.lightning.force.com/abc123,Riley Finger,10\nGlobex Expansion,120000,open,,Michael Cieslak,9\n';
   const a=document.createElement('a');
   a.href='data:text/csv;charset=utf-8,'+encodeURIComponent(csv);
-  a.download='spiff_opps_template.csv';
-  a.click();
+  a.download='spiff_opps_template.csv';a.click();
 }
 
 async function uploadCSV(){
   const file=document.getElementById('csv-file').files[0];
   const result=document.getElementById('csv-result');
   if(!file){result.style.color='#e24b4a';result.textContent='// no file selected';return;}
-
   const text=await file.text();
   const lines=text.trim().split('\n').map(l=>l.trim()).filter(l=>l);
   if(lines.length<2){result.style.color='#e24b4a';result.textContent='// file is empty or missing data rows';return;}
-
   const headers=lines[0].toLowerCase().split(',').map(h=>h.trim());
-  const nameIdx=headers.indexOf('opp_name');
-  const valIdx=headers.indexOf('value');
-  const stageIdx=headers.indexOf('stage');
-  const sfIdx=headers.indexOf('sf_url');
-  const seIdx=headers.indexOf('se_name');
-  const tokenIdx=headers.indexOf('token_num');
-
+  const nameIdx=headers.indexOf('opp_name'),valIdx=headers.indexOf('value'),stageIdx=headers.indexOf('stage');
+  const sfIdx=headers.indexOf('sf_url'),seIdx=headers.indexOf('se_name'),tokenIdx=headers.indexOf('token_num');
   if(nameIdx===-1||valIdx===-1){result.style.color='#e24b4a';result.textContent='// missing required columns: opp_name, value';return;}
-
   let added=0,assigned=0,skipped=0,errors=[];
-
   for(let i=1;i<lines.length;i++){
     const cols=lines[i].split(',').map(c=>c.trim());
-    const name=cols[nameIdx]||'';
-    const value=parseFloat(cols[valIdx]);
+    const name=cols[nameIdx]||'';const value=parseFloat(cols[valIdx]);
     const stage=(cols[stageIdx]||'open').toLowerCase().replace(' ','_');
     const sfUrl=sfIdx>=0?cols[sfIdx]||'':'';
-    const seName=seIdx>=0?cols[seIdx]||'':'';
-    const tokenNum=tokenIdx>=0?parseInt(cols[tokenIdx])||0:0;
-
+    const seName=seIdx>=0?cols[seIdx]||'':'';const tokenNum=tokenIdx>=0?parseInt(cols[tokenIdx])||0:0;
     if(!name||isNaN(value)||value<=0){errors.push(`row ${i+1}: invalid name or value`);skipped++;continue;}
     const validStages=['open','closed_won','closed_lost'];
     const finalStage=validStages.includes(stage)?stage:'open';
-
-    // check opp not already taken
-    const alreadyExists=state.opps.find(o=>o.name.toLowerCase()===name.toLowerCase());
-    if(alreadyExists){errors.push(`row ${i+1}: "${name}" already exists, skipped`);skipped++;continue;}
-
+    if(state.opps.find(o=>o.name.toLowerCase()===name.toLowerCase())){errors.push(`row ${i+1}: "${name}" already exists`);skipped++;continue;}
     const newOpp={id:oppCounter++,name,value,stage:finalStage,sfUrl};
-    state.opps.push(newOpp);
-    added++;
-
-    // optional assignment
+    state.opps.push(newOpp);added++;
     if(seName&&tokenNum){
       const se=state.ses.find(s=>s.name.toLowerCase()===seName.toLowerCase());
-      if(!se){errors.push(`row ${i+1}: SE "${seName}" not found, opp added without assignment`);continue;}
+      if(!se){errors.push(`row ${i+1}: SE "${seName}" not found`);continue;}
       const tok=se.tokens.find(t=>t.num===tokenNum);
-      if(!tok){errors.push(`row ${i+1}: token ${tokenNum} not found on ${seName}, opp added without assignment`);continue;}
-      const alreadyTaken=state.ses.some(s=>s.tokens.some(t=>t.oppId===newOpp.id));
-      if(tok.oppId!==null){errors.push(`row ${i+1}: token ${tokenNum} already assigned, opp added without assignment`);continue;}
-      tok.oppId=newOpp.id;
-      assigned++;
+      if(!tok||tok.burned){errors.push(`row ${i+1}: token ${tokenNum} not available`);continue;}
+      if(tok.oppId!==null){errors.push(`row ${i+1}: token ${tokenNum} already assigned`);continue;}
+      tok.oppId=newOpp.id;assigned++;
     }
   }
-
-  await saveState();
-  renderOpps();
-
+  await saveState();renderOpps();
   let msg=`// ${added} opps added, ${assigned} tokens assigned`;
-  if(skipped>0)msg+=`, ${skipped} rows skipped`;
+  if(skipped>0)msg+=`, ${skipped} skipped`;
   result.style.color=skipped>0?'#EF9F27':'#5DCAA5';
-  result.textContent=msg;
-  if(errors.length>0){
-    result.textContent+='\n'+errors.join('\n');
-  }
+  result.textContent=msg+(errors.length?'\n'+errors.join('\n'):'');
   document.getElementById('csv-file').value='';
 }
 
-document.getElementById('viewer-name').innerHTML=SE_NAMES.map(n=>`<option value="${n}">${n}</option>`).join('');
+// ─── HELP MODAL ───────────────────────────────────────────────────────────────
+function openHelp(){document.getElementById('help-modal').style.display='flex';}
+function closeHelp(){document.getElementById('help-modal').style.display='none';}
 
+// ─── AUTO RESUME ─────────────────────────────────────────────────────────────
+document.getElementById('viewer-name').innerHTML=SE_NAMES.map(n=>`<option value="${n}">${n}</option>`).join('');
 (async()=>{
   const savedRole=sessionStorage.getItem('spiff_role');
   if(savedRole==='admin'&&_adminPass){
@@ -747,7 +1074,7 @@ document.getElementById('viewer-name').innerHTML=SE_NAMES.map(n=>`<option value=
     document.getElementById('main-app').style.display='block';
     document.getElementById('role-badge').textContent='ADMIN';
     document.getElementById('role-badge').className='role-badge role-admin';
-    applyRoleUI();renderAll();
+    applyRoleUI();renderAll();startTimers();
   }else if(savedRole==='viewer'){
     const name=sessionStorage.getItem('spiff_viewer');
     if(name){
@@ -757,7 +1084,7 @@ document.getElementById('viewer-name').innerHTML=SE_NAMES.map(n=>`<option value=
       document.getElementById('main-app').style.display='block';
       document.getElementById('role-badge').textContent='VIEW ONLY';
       document.getElementById('role-badge').className='role-badge role-viewer';
-      applyRoleUI();renderAll();
+      applyRoleUI();renderAll();startTimers();
     }
   }
 })();
