@@ -129,7 +129,7 @@ export async function onRequestPost(context) {
     return new Response(JSON.stringify({ error: 'Unauthorized' }), { status: 401, headers: { 'Content-Type': 'application/json' } });
   }
   const { type } = body;
-  const allEmails = [...SE_EMAILS, env.ADMIN_EMAIL || 'admin@verkada.com'];
+  const allEmails = [env.ADMIN_EMAIL || 'admin@verkada.com'];
 
   let subject, html;
   if (type === 'window_open') {
